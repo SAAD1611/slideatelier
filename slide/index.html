@@ -150,6 +150,84 @@ footer { padding: 44px 80px; border-top: 1px solid rgba(196,158,97,0.1); display
   nav { padding: 0 20px; }
   .nav-links { display: none; }
 }
+
+  /* ── Floating tools logos ── */
+  .tools-float { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+  .tool-icon {
+    position: absolute;
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    animation: floatIcon linear infinite;
+    opacity: 0;
+  }
+  .tool-icon svg { filter: drop-shadow(0 4px 12px rgba(196,158,97,0.2)); }
+  .tool-icon span {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 1px;
+    color: rgba(196,158,97,0.35);
+    text-transform: uppercase;
+  }
+  @keyframes floatIcon {
+    0%   { opacity: 0; transform: translateY(0px) rotate(0deg) scale(0.85); }
+    8%   { opacity: 1; }
+    90%  { opacity: 0.6; }
+    100% { opacity: 0; transform: translateY(-140px) rotate(8deg) scale(1.05); }
+  }
+  @keyframes floatIconL {
+    0%   { opacity: 0; transform: translateY(0px) rotate(0deg) scale(0.85); }
+    8%   { opacity: 1; }
+    90%  { opacity: 0.5; }
+    100% { opacity: 0; transform: translateY(-120px) rotate(-6deg) scale(1.05); }
+  }
+  @keyframes floatIconR {
+    0%   { opacity: 0; transform: translateY(0px) translateX(0px) rotate(2deg) scale(0.9); }
+    8%   { opacity: 0.8; }
+    90%  { opacity: 0.4; }
+    100% { opacity: 0; transform: translateY(-100px) translateX(20px) rotate(-4deg) scale(1.08); }
+  }
+
+  /* Marquee section — position relative for tools */
+  .mq-section { position: relative; }
+
+  /* Tools strip between sections */
+  .tools-strip {
+    position: relative;
+    padding: 56px 80px;
+    border-top: 1px solid rgba(196,158,97,0.08);
+    border-bottom: 1px solid rgba(196,158,97,0.08);
+    overflow: hidden;
+    background: rgba(196,158,97,0.015);
+  }
+  .tools-strip-label {
+    font-size: 10px; font-weight: 500; letter-spacing: 5px;
+    text-transform: uppercase; color: rgba(196,158,97,0.3);
+    text-align: center; margin-bottom: 36px;
+  }
+  .tools-row {
+    display: flex; justify-content: center;
+    align-items: center; gap: 48px; flex-wrap: wrap;
+  }
+  .tool-pill {
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(196,158,97,0.04);
+    border: 1px solid rgba(196,158,97,0.12);
+    border-radius: 100px;
+    padding: 12px 22px;
+    transition: all .3s;
+    cursor: default;
+  }
+  .tool-pill:hover {
+    background: rgba(196,158,97,0.09);
+    border-color: rgba(196,158,97,0.3);
+    transform: translateY(-3px);
+  }
+  .tool-pill-name {
+    font-size: 13px; font-weight: 400;
+    color: rgba(245,240,232,0.55);
+    letter-spacing: 0.5px;
+    transition: color .3s;
+  }
+  .tool-pill:hover .tool-pill-name { color: #F5F0E8; }
+
 </style>
 </head>
 <body>
@@ -169,6 +247,8 @@ footer { padding: 44px 80px; border-top: 1px solid rgba(196,158,97,0.1); display
 
 <section class="hero">
   <div class="hero-bg"></div>
+  <div class="tools-float" id="floatingTools"></div>
+
   <div class="hero-vline"></div>
   <div class="rv"><div class="hero-eyebrow">Services Professionnels · Maroc</div></div>
   <h1 class="ht rv d1">Vos documents,<em>redessinés.</em></h1>
@@ -188,6 +268,112 @@ footer { padding: 44px 80px; border-top: 1px solid rgba(196,158,97,0.1); display
 <div class="mq-wrap">
   <div class="mq-track">
     <span class="mq-item">Présentation de thèse</span><span class="mq-item">CV Professionnel</span><span class="mq-item">Poster Scientifique</span><span class="mq-item">Pitch Deck</span><span class="mq-item">Soutenance PFE</span><span class="mq-item">Lettre de Motivation</span><span class="mq-item">PPTX · PDF · Word</span><span class="mq-item">Révisions incluses</span><span class="mq-item">Présentation de thèse</span><span class="mq-item">CV Professionnel</span><span class="mq-item">Poster Scientifique</span><span class="mq-item">Pitch Deck</span><span class="mq-item">Soutenance PFE</span><span class="mq-item">Lettre de Motivation</span><span class="mq-item">PPTX · PDF · Word</span><span class="mq-item">Révisions incluses</span>
+  </div>
+</div>
+
+
+<!-- Tools Strip -->
+<div class="tools-strip rv">
+  <div class="tools-strip-label">Formats & outils livrés</div>
+  <div class="tools-row">
+    <div class="tool-pill rv">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+  <rect width="28" height="28" rx="5" fill="#C43E1C"/>
+  <path d="M7 6h8l5 5v11a1 1 0 01-1 1H7a1 1 0 01-1-1V7a1 1 0 011-1z" fill="white" opacity="0.95"/>
+  <path d="M15 6l5 5h-5V6z" fill="#E8856A"/>
+  <circle cx="11" cy="16" r="2.5" fill="#C43E1C" opacity="0.7"/>
+  <path d="M11 16 l5-3" stroke="#C43E1C" stroke-width="1.5" opacity="0.7" stroke-linecap="round"/>
+  <path d="M11 16 l4 2" stroke="#C43E1C" stroke-width="1.5" opacity="0.5" stroke-linecap="round"/>
+</svg>
+      <span class="tool-pill-name">PowerPoint</span>
+    </div>
+    <div class="tool-pill rv">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+  <rect width="28" height="28" rx="5" fill="#E53935"/>
+  <path d="M7 6h8l5 5v11a1 1 0 01-1 1H7a1 1 0 01-1-1V7a1 1 0 011-1z" fill="white" opacity="0.95"/>
+  <path d="M15 6l5 5h-5V6z" fill="#EF9A9A"/>
+  <text x="9" y="19" font-size="5.5" font-weight="700" fill="#E53935" font-family="Arial">PDF</text>
+</svg>
+      <span class="tool-pill-name">PDF</span>
+    </div>
+    <div class="tool-pill rv">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+  <rect width="28" height="28" rx="5" fill="#185ABD"/>
+  <path d="M7 6h8l5 5v11a1 1 0 01-1 1H7a1 1 0 01-1-1V7a1 1 0 011-1z" fill="white" opacity="0.95"/>
+  <path d="M15 6l5 5h-5V6z" fill="#82B1E8"/>
+  <text x="7.5" y="19" font-size="5" font-weight="700" fill="#185ABD" font-family="Arial">W</text>
+  <line x1="9" y1="14" x2="17" y2="14" stroke="#185ABD" stroke-width="1" opacity="0.5"/>
+  <line x1="9" y1="16.5" x2="17" y2="16.5" stroke="#185ABD" stroke-width="1" opacity="0.5"/>
+  <line x1="9" y1="19" x2="14" y2="19" stroke="#185ABD" stroke-width="1" opacity="0.5"/>
+</svg>
+      <span class="tool-pill-name">Word</span>
+    </div>
+    <div class="tool-pill rv">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+  <rect width="28" height="28" rx="5" fill="#1D6F42"/>
+  <path d="M7 6h8l5 5v11a1 1 0 01-1 1H7a1 1 0 01-1-1V7a1 1 0 011-1z" fill="white" opacity="0.95"/>
+  <path d="M15 6l5 5h-5V6z" fill="#81C784"/>
+  <line x1="9" y1="13" x2="17" y2="13" stroke="#1D6F42" stroke-width="0.8" opacity="0.4"/>
+  <line x1="9" y1="15.5" x2="17" y2="15.5" stroke="#1D6F42" stroke-width="0.8" opacity="0.4"/>
+  <line x1="9" y1="18" x2="17" y2="18" stroke="#1D6F42" stroke-width="0.8" opacity="0.4"/>
+  <line x1="13" y1="12" x2="13" y2="20" stroke="#1D6F42" stroke-width="0.8" opacity="0.4"/>
+</svg>
+      <span class="tool-pill-name">Excel</span>
+    </div>
+    <div class="tool-pill rv">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+  <rect width="28" height="28" rx="5" fill="#1E1E1E"/>
+  <rect x="10" y="6" width="5" height="5" rx="2.5" fill="#F24E1E"/>
+  <rect x="10" y="11.5" width="5" height="5" rx="2.5" fill="#FF7262"/>
+  <rect x="10" y="17" width="5" height="5" rx="2.5" fill="#0ACF83"/>
+  <rect x="15.5" y="6" width="5" height="5" rx="2.5" fill="#A259FF"/>
+  <circle cx="18" cy="14" r="2.5" fill="#1ABCFE"/>
+</svg>
+      <span class="tool-pill-name">Figma</span>
+    </div>
+    <div class="tool-pill rv">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+  <rect width="28" height="28" rx="14" fill="#00C4CC"/>
+  <text x="14" y="19" font-size="11" font-weight="900" fill="white" font-family="Arial" text-anchor="middle">C</text>
+</svg>
+      <span class="tool-pill-name">Canva</span>
+    </div>
+    <div class="tool-pill rv">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+  <rect width="28" height="28" rx="5" fill="#FF9A00"/>
+  <text x="14" y="18" font-size="8" font-weight="900" fill="white" font-family="Arial" text-anchor="middle">Ai</text>
+</svg>
+      <span class="tool-pill-name">Illustrator</span>
+    </div>
+    <div class="tool-pill rv">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+  <rect width="28" height="28" rx="5" fill="#FAFAFA"/>
+  <polygon points="14,5 22,19 6,19" fill="none" stroke-width="0"/>
+  <polygon points="14,6 7,18 10,18 14,11 18,18 21,18" fill="#4285F4" opacity="0"/>
+  <path d="M9 19 L14 10 L19 19 Z" fill="#0F9D58"/>
+  <path d="M5 19 L10 10 L14 10 L9 19 Z" fill="#FBBC05"/>
+  <path d="M19 19 L14 10 L19 10 L23 19 Z" fill="#EA4335"/>
+</svg>
+      <span class="tool-pill-name">Google Drive</span>
+    </div>
+    <div class="tool-pill rv">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+  <rect width="28" height="28" rx="14" fill="#25D366"/>
+  <path d="M14 7C10.1 7 7 10.1 7 14c0 1.5.4 2.9 1.2 4.1L7 21l3-1.2c1.1.7 2.5 1.2 4 1.2 3.9 0 7-3.1 7-7s-3.1-7-7-7zm3.5 9.5c-.2.5-1 1-1.4 1-.4.1-.8.1-2.5-.5-2-.8-3.3-2.8-3.4-2.9-.1-.2-.8-1.1-.8-2.1s.5-1.5.7-1.7c.2-.2.4-.2.5-.2h.4c.1 0 .3 0 .5.4l.6 1.5c.1.2.1.3 0 .5l-.3.4-.3.4c.1.2.5.8 1.1 1.3.7.6 1.3.8 1.5.9.2.1.4 0 .5-.1l.4-.5c.1-.2.3-.2.5-.1l1.5.7c.2.1.3.2.3.4 0 .2-.1.8-.3 1.1z" fill="white"/>
+</svg>
+      <span class="tool-pill-name">WhatsApp</span>
+    </div>
+    <div class="tool-pill rv">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+  <rect width="28" height="28" rx="5" fill="white"/>
+  <path d="M6 9h16l-8 7-8-7z" fill="#EA4335"/>
+  <path d="M6 9v10h16V9l-8 7-8-7z" fill="white"/>
+  <path d="M6 9l8 7 8-7" stroke="#EA4335" stroke-width="1.5" fill="none"/>
+  <rect x="6" y="9" width="2" height="10" fill="#34A853"/>
+  <rect x="20" y="9" width="2" height="10" fill="#FBBC05"/>
+</svg>
+      <span class="tool-pill-name">Gmail</span>
+    </div>
   </div>
 </div>
 
@@ -404,6 +590,38 @@ footer { padding: 44px 80px; border-top: 1px solid rgba(196,158,97,0.1); display
   });
   var tmr = setInterval(function(){ goTo((ci+1)%steps.length); }, 2800);
 })();
+
+  // Floating tools icons in hero
+  (function() {
+    var container = document.getElementById('floatingTools');
+    if (!container) return;
+    var tools = [
+      { svg: '<svg width="36" height="36" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="#C43E1C"/><path d="M7 6h8l5 5v11a1 1 0 01-1 1H7a1 1 0 01-1-1V7a1 1 0 011-1z" fill="white" opacity="0.95"/><path d="M15 6l5 5h-5V6z" fill="#E8856A"/><circle cx="11" cy="16" r="2.5" fill="#C43E1C" opacity="0.7"/></svg>', label: 'PPTX' },
+      { svg: '<svg width="36" height="36" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="#E53935"/><path d="M7 6h8l5 5v11a1 1 0 01-1 1H7a1 1 0 01-1-1V7a1 1 0 011-1z" fill="white" opacity="0.95"/><path d="M15 6l5 5h-5V6z" fill="#EF9A9A"/><text x="9" y="19" font-size="5.5" font-weight="700" fill="#E53935" font-family="Arial">PDF</text></svg>', label: 'PDF' },
+      { svg: '<svg width="36" height="36" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="#185ABD"/><path d="M7 6h8l5 5v11a1 1 0 01-1 1H7a1 1 0 01-1-1V7a1 1 0 011-1z" fill="white" opacity="0.95"/><path d="M15 6l5 5h-5V6z" fill="#82B1E8"/></svg>', label: 'WORD' },
+      { svg: '<svg width="36" height="36" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="#1D6F42"/><path d="M7 6h8l5 5v11a1 1 0 01-1 1H7a1 1 0 01-1-1V7a1 1 0 011-1z" fill="white" opacity="0.95"/></svg>', label: 'EXCEL' },
+      { svg: '<svg width="36" height="36" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="#1E1E1E"/><rect x="10" y="6" width="5" height="5" rx="2.5" fill="#F24E1E"/><rect x="10" y="11.5" width="5" height="5" rx="2.5" fill="#FF7262"/><rect x="10" y="17" width="5" height="5" rx="2.5" fill="#0ACF83"/><rect x="15.5" y="6" width="5" height="5" rx="2.5" fill="#A259FF"/><circle cx="18" cy="14" r="2.5" fill="#1ABCFE"/></svg>', label: 'FIGMA' },
+      { svg: '<svg width="36" height="36" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="14" fill="#00C4CC"/><text x="14" y="19" font-size="11" font-weight="900" fill="white" font-family="Arial" text-anchor="middle">C</text></svg>', label: 'CANVA' },
+    ];
+    var anims = ['floatIcon', 'floatIconL', 'floatIconR'];
+    function spawn() {
+      var t = tools[Math.floor(Math.random() * tools.length)];
+      var el = document.createElement('div');
+      el.className = 'tool-icon';
+      el.innerHTML = t.svg + '<span>' + t.label + '</span>';
+      var left = 5 + Math.random() * 85;
+      var dur = 6 + Math.random() * 8;
+      var delay = Math.random() * 2;
+      var anim = anims[Math.floor(Math.random() * anims.length)];
+      var size = 0.6 + Math.random() * 0.7;
+      el.style.cssText = 'left:' + left + '%;bottom:' + (10 + Math.random()*40) + '%;animation:' + anim + ' ' + dur + 's ' + delay + 's ease-in-out forwards;transform:scale(' + size + ');';
+      container.appendChild(el);
+      setTimeout(function() { el.remove(); }, (dur + delay) * 1000 + 500);
+    }
+    spawn();
+    setInterval(spawn, 1200);
+  })();
+
 </script>
 </body>
 </html>
