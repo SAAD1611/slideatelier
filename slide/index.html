@@ -6,676 +6,404 @@
 <title>SlideAtelier — Documents qui impressionnent. Toujours.</title>
 <meta name="description" content="Présentations de thèse, CV professionnels, posters scientifiques et pitch decks au Maroc. Design premium, livraison rapide, révisions incluses.">
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
-<script>
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        ink:    '#0A0A0C',
-        ink2:   '#111114',
-        ink3:   '#1A1A1F',
-        gold:   '#C49E61',
-        gold2:  '#E8C97A',
-        gold3:  '#8A6E3E',
-        cream:  '#F5F0E8',
-        muted:  'rgba(245,240,232,0.45)',
-      },
-      fontFamily: {
-        display: ['"Playfair Display"', 'serif'],
-        sans:    ['"DM Sans"', 'sans-serif'],
-        mono:    ['"DM Mono"', 'monospace'],
-      },
-    }
-  }
-}
-</script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
-  /* ── Global ── */
-  *, *::before, *::after { box-sizing: border-box; }
-  html { cursor: none; }
-  body { background: #0A0A0C; color: #F5F0E8; font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
-
-  /* ── Custom cursor ── */
-  #cursor { position: fixed; width: 10px; height: 10px; background: #C49E61; border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width .2s, height .2s, background .2s; mix-blend-mode: normal; }
-  #cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid rgba(196,158,97,0.4); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all .12s ease; }
-  body:has(a:hover) #cursor, body:has(button:hover) #cursor { width: 6px; height: 6px; background: #E8C97A; }
-  body:has(a:hover) #cursor-ring, body:has(button:hover) #cursor-ring { width: 56px; height: 56px; border-color: rgba(196,158,97,0.7); }
-
-  /* ── Grain overlay ── */
-  body::before {
-    content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-    opacity: 0.028; background-size: 180px;
-  }
-
-  /* ── Reveal animations ── */
-  .reveal { opacity: 0; transform: translateY(40px); transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
-  .reveal.visible { opacity: 1; transform: none; }
-  .reveal-delay-1 { transition-delay: .1s; }
-  .reveal-delay-2 { transition-delay: .2s; }
-  .reveal-delay-3 { transition-delay: .35s; }
-  .reveal-delay-4 { transition-delay: .5s; }
-
-  /* ── Gold line ── */
-  .gold-line { display: block; width: 48px; height: 1.5px; background: #C49E61; }
-
-  /* ── Nav ── */
-  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 48px; height: 72px; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(24px); border-bottom: 1px solid rgba(196,158,97,0.08); background: rgba(10,10,12,0.85); }
-  .nav-brand { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: #F5F0E8; letter-spacing: -0.5px; }
-  .nav-brand span { font-style: italic; font-weight: 400; color: #C49E61; }
-  .nav-links { display: flex; gap: 40px; align-items: center; }
-  .nav-link { font-size: 13px; font-weight: 400; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(245,240,232,0.55); text-decoration: none; transition: color .2s; }
-  .nav-link:hover { color: #C49E61; }
-  .nav-cta { background: #C49E61; color: #0A0A0C; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; padding: 10px 24px; border-radius: 3px; text-decoration: none; transition: background .2s; }
-  .nav-cta:hover { background: #E8C97A; }
-
-  /* ── Hero ── */
-  .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 80px 100px; position: relative; overflow: hidden; }
-  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 70% 30%, rgba(196,158,97,0.07) 0%, transparent 70%); }
-  .hero-line-v { position: absolute; left: 48px; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, transparent, rgba(196,158,97,0.2) 30%, rgba(196,158,97,0.2) 70%, transparent); }
-  .hero-counter { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; color: rgba(196,158,97,0.4); margin-bottom: 40px; }
-  .hero-eyebrow { font-size: 12px; font-weight: 500; letter-spacing: 5px; text-transform: uppercase; color: #C49E61; margin-bottom: 28px; display: flex; align-items: center; gap: 16px; }
-  .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: #C49E61; }
-  .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(72px, 9vw, 130px); font-weight: 700; line-height: 0.92; letter-spacing: -3px; color: #F5F0E8; margin-bottom: 0; }
-  .hero-title em { font-style: italic; font-weight: 400; color: #C49E61; display: block; }
-  .hero-subtitle { font-size: 18px; font-weight: 300; color: rgba(245,240,232,0.5); line-height: 1.7; max-width: 440px; margin-top: 40px; }
-  .hero-bottom { display: flex; align-items: flex-end; justify-content: space-between; margin-top: 64px; }
-  .hero-cta-group { display: flex; gap: 16px; align-items: center; }
-  .btn-primary { background: #C49E61; color: #0A0A0C; font-size: 13px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; padding: 16px 36px; border-radius: 3px; text-decoration: none; transition: all .25s; display: inline-block; }
-  .btn-primary:hover { background: #E8C97A; transform: translateY(-2px); }
-  .btn-ghost { border: 1px solid rgba(196,158,97,0.3); color: #C49E61; font-size: 13px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; padding: 16px 36px; border-radius: 3px; text-decoration: none; transition: all .25s; display: inline-block; }
-  .btn-ghost:hover { border-color: #C49E61; background: rgba(196,158,97,0.06); }
-  .hero-scroll { display: flex; flex-direction: column; align-items: center; gap: 12px; }
-  .hero-scroll-text { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(245,240,232,0.3); writing-mode: vertical-rl; }
-  .hero-scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, rgba(196,158,97,0.4), transparent); animation: scrollLine 1.8s ease-in-out infinite; }
-  @keyframes scrollLine { 0%,100% { transform: scaleY(1); opacity: 1; } 50% { transform: scaleY(0.3); opacity: 0.4; } }
-  .hero-tag { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; color: rgba(196,158,97,0.35); }
-
-  /* ── Marquee ── */
-  .marquee-wrap { border-top: 1px solid rgba(196,158,97,0.1); border-bottom: 1px solid rgba(196,158,97,0.1); padding: 18px 0; overflow: hidden; background: rgba(196,158,97,0.03); }
-  .marquee-track { display: flex; gap: 0; white-space: nowrap; animation: marquee 22s linear infinite; }
-  .marquee-track:hover { animation-play-state: paused; }
-  .marquee-item { font-size: 12px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; color: rgba(196,158,97,0.5); padding: 0 40px; border-right: 1px solid rgba(196,158,97,0.15); }
-  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-  /* ── About strip ── */
-  .about-strip { padding: 120px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-  .about-number { font-family: 'Playfair Display', serif; font-size: 180px; font-weight: 700; color: rgba(196,158,97,0.06); line-height: 1; letter-spacing: -8px; user-select: none; }
-  .about-content { }
-  .section-label { font-size: 11px; font-weight: 500; letter-spacing: 5px; text-transform: uppercase; color: #C49E61; margin-bottom: 24px; display: flex; align-items: center; gap: 14px; }
-  .section-label::before { content: ''; display: block; width: 24px; height: 1px; background: #C49E61; }
-  .about-title { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 700; color: #F5F0E8; line-height: 1.15; margin-bottom: 24px; letter-spacing: -1px; }
-  .about-title em { font-style: italic; color: #C49E61; }
-  .about-text { font-size: 17px; font-weight: 300; color: rgba(245,240,232,0.55); line-height: 1.8; margin-bottom: 32px; }
-  .stats-row { display: flex; gap: 40px; }
-  .stat { }
-  .stat-val { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 700; color: #C49E61; line-height: 1; }
-  .stat-lbl { font-size: 12px; font-weight: 400; letter-spacing: 1px; color: rgba(245,240,232,0.4); margin-top: 6px; }
-
-  /* ── Services ── */
-  .services-section { padding: 100px 80px; }
-  .services-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 64px; }
-  .services-title { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 700; color: #F5F0E8; letter-spacing: -1.5px; line-height: 1.1; }
-  .services-title em { font-style: italic; color: #C49E61; }
-  .services-count { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px; color: rgba(245,240,232,0.3); }
-  .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-  .service-card {
-    background: rgba(196,158,97,0.03);
-    border: 1px solid rgba(196,158,97,0.1);
-    padding: 48px 44px;
-    position: relative;
-    overflow: hidden;
-    transition: all .4s cubic-bezier(.16,1,.3,1);
-    cursor: none;
-  }
-  .service-card:hover { background: rgba(196,158,97,0.07); border-color: rgba(196,158,97,0.3); transform: translateY(-4px); }
-  .service-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: #C49E61; transform: scaleY(0); transform-origin: bottom; transition: transform .4s cubic-bezier(.16,1,.3,1); }
-  .service-card:hover::before { transform: scaleY(1); }
-  .service-card-num { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; color: rgba(196,158,97,0.3); margin-bottom: 20px; }
-  .service-card-name { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: #F5F0E8; margin-bottom: 12px; line-height: 1.2; }
-  .service-card-desc { font-size: 15px; font-weight: 300; color: rgba(245,240,232,0.5); line-height: 1.7; margin-bottom: 24px; }
-  .service-card-meta { display: flex; align-items: center; justify-content: space-between; }
-  .service-price { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #C49E61; }
-  .service-delay { font-size: 12px; font-weight: 400; color: rgba(245,240,232,0.3); letter-spacing: 1px; }
-  .service-badge { font-size: 9px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; border: 1px solid rgba(196,158,97,0.3); color: #C49E61; border-radius: 2px; }
-
-  /* ── Process ── */
-  .process-section { padding: 100px 80px; border-top: 1px solid rgba(196,158,97,0.08); }
-  .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 64px; background: rgba(196,158,97,0.08); }
-  .process-step { background: #0A0A0C; padding: 48px 36px; position: relative; }
-  .process-step::after { content: ''; position: absolute; top: 48px; right: 0; width: 1px; height: 40px; background: rgba(196,158,97,0.2); }
-  .process-step:last-child::after { display: none; }
-  .process-num { font-family: 'Playfair Display', serif; font-size: 72px; font-weight: 700; color: rgba(196,158,97,0.08); line-height: 1; margin-bottom: 20px; }
-  .process-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #F5F0E8; margin-bottom: 12px; }
-  .process-desc { font-size: 14px; font-weight: 300; color: rgba(245,240,232,0.45); line-height: 1.7; }
-
-  /* ── Why us ── */
-  .why-section { padding: 100px 80px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: start; }
-  .why-sticky { position: sticky; top: 120px; }
-  .why-big-title { font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 700; color: #F5F0E8; line-height: 1.05; letter-spacing: -2px; margin-bottom: 24px; }
-  .why-big-title em { font-style: italic; color: #C49E61; }
-  .why-big-sub { font-size: 16px; font-weight: 300; color: rgba(245,240,232,0.45); line-height: 1.8; max-width: 360px; }
-  .why-list { display: flex; flex-direction: column; gap: 0; }
-  .why-item { padding: 36px 0; border-bottom: 1px solid rgba(196,158,97,0.1); display: flex; gap: 28px; align-items: flex-start; }
-  .why-item:first-child { border-top: 1px solid rgba(196,158,97,0.1); }
-  .why-icon { width: 44px; height: 44px; background: rgba(196,158,97,0.08); border: 1px solid rgba(196,158,97,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
-  .why-item-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #F5F0E8; margin-bottom: 8px; }
-  .why-item-desc { font-size: 15px; font-weight: 300; color: rgba(245,240,232,0.5); line-height: 1.7; }
-
-  /* ── Tarifs ── */
-  .tarifs-section { padding: 100px 80px; border-top: 1px solid rgba(196,158,97,0.08); }
-  .tarifs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 64px; }
-  .tarif-card { background: rgba(196,158,97,0.04); border: 1px solid rgba(196,158,97,0.12); border-radius: 4px; padding: 36px 32px; position: relative; overflow: hidden; transition: all .3s; }
-  .tarif-card:hover { border-color: rgba(196,158,97,0.35); background: rgba(196,158,97,0.07); }
-  .tarif-card.featured { border-color: #C49E61; background: rgba(196,158,97,0.08); }
-  .tarif-card.featured::before { content: 'POPULAIRE'; position: absolute; top: 16px; right: 16px; font-size: 9px; font-weight: 500; letter-spacing: 2px; color: #0A0A0C; background: #C49E61; padding: 4px 10px; border-radius: 2px; }
-  .tarif-name { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: #F5F0E8; margin-bottom: 8px; }
-  .tarif-desc { font-size: 13px; font-weight: 300; color: rgba(245,240,232,0.45); margin-bottom: 28px; line-height: 1.6; }
-  .tarif-price-wrap { margin-bottom: 24px; }
-  .tarif-price { font-family: 'Playfair Display', serif; font-size: 44px; font-weight: 700; color: #C49E61; line-height: 1; }
-  .tarif-unit { font-size: 14px; font-weight: 300; color: rgba(196,158,97,0.6); }
-  .tarif-delay { font-size: 12px; font-weight: 400; color: rgba(245,240,232,0.3); letter-spacing: 1px; margin-top: 6px; }
-  .tarif-features { display: flex; flex-direction: column; gap: 10px; }
-  .tarif-feature { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; font-weight: 300; color: rgba(245,240,232,0.55); }
-  .tarif-feature::before { content: '✦'; color: #C49E61; font-size: 10px; margin-top: 3px; flex-shrink: 0; }
-  .promo-banner { margin-top: 24px; padding: 20px 28px; background: rgba(196,158,97,0.06); border: 1px solid rgba(196,158,97,0.2); border-radius: 4px; text-align: center; font-size: 15px; font-weight: 400; color: rgba(245,240,232,0.7); }
-  .promo-banner span { color: #C49E61; font-weight: 500; }
-
-  /* ── Testimonials ── */
-  .testimonials-section { padding: 100px 80px; border-top: 1px solid rgba(196,158,97,0.08); }
-  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .testi-card { background: rgba(196,158,97,0.03); border: 1px solid rgba(196,158,97,0.1); border-radius: 4px; padding: 40px 36px; display: flex; flex-direction: column; gap: 24px; transition: all .35s cubic-bezier(.16,1,.3,1); position: relative; overflow: hidden; }
-  .testi-card:hover { background: rgba(196,158,97,0.07); border-color: rgba(196,158,97,0.28); transform: translateY(-4px); }
-  .testi-card.testi-featured { border-color: rgba(196,158,97,0.35); background: rgba(196,158,97,0.06); }
-  .testi-stars { color: #C49E61; font-size: 16px; letter-spacing: 3px; }
-  .testi-quote { font-size: 15px; font-weight: 300; color: rgba(245,240,232,0.65); line-height: 1.8; flex: 1; font-style: italic; }
-  .testi-footer { display: flex; align-items: center; gap: 14px; padding-top: 20px; border-top: 1px solid rgba(196,158,97,0.1); }
-  .testi-avatar { width: 42px; height: 42px; border-radius: 50%; background: rgba(196,158,97,0.15); border: 1px solid rgba(196,158,97,0.3); display: flex; align-items: center; justify-content: center; font-family: "Playfair Display", serif; font-size: 14px; font-weight: 700; color: #C49E61; flex-shrink: 0; }
-  .testi-name { font-size: 15px; font-weight: 500; color: #F5F0E8; margin-bottom: 3px; }
-  .testi-role { font-size: 12px; font-weight: 300; color: rgba(245,240,232,0.35); letter-spacing: 0.5px; }
-
-  /* ── CTA Section ── */
-  .cta-section { margin: 0 80px 100px; border: 1px solid rgba(196,158,97,0.15); border-radius: 6px; padding: 80px; background: rgba(196,158,97,0.03); position: relative; overflow: hidden; }
-  .cta-section::before { content: ''; position: absolute; top: -200px; right: -200px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(196,158,97,0.08) 0%, transparent 70%); pointer-events: none; }
-  .cta-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 5px; text-transform: uppercase; color: rgba(196,158,97,0.6); margin-bottom: 24px; }
-  .cta-title { font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 700; color: #F5F0E8; line-height: 1.05; letter-spacing: -2px; margin-bottom: 16px; }
-  .cta-title em { font-style: italic; color: #C49E61; }
-  .cta-sub { font-size: 18px; font-weight: 300; color: rgba(245,240,232,0.5); margin-bottom: 48px; max-width: 500px; line-height: 1.7; }
-  .cta-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
-  .cta-contact-row { display: flex; gap: 40px; margin-top: 48px; padding-top: 48px; border-top: 1px solid rgba(196,158,97,0.1); }
-  .cta-contact-item { }
-  .cta-contact-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(196,158,97,0.4); margin-bottom: 6px; }
-  .cta-contact-val { font-size: 17px; font-weight: 400; color: #C49E61; }
-
-  /* ── Footer ── */
-  footer { padding: 48px 80px; border-top: 1px solid rgba(196,158,97,0.1); display: flex; align-items: center; justify-content: space-between; }
-  .footer-brand { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: rgba(245,240,232,0.4); }
-  .footer-brand span { font-style: italic; color: rgba(196,158,97,0.4); }
-  .footer-links { display: flex; gap: 32px; }
-  .footer-link { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(245,240,232,0.3); text-decoration: none; transition: color .2s; }
-  .footer-link:hover { color: #C49E61; }
-  .footer-copy { font-size: 12px; color: rgba(245,240,232,0.2); font-family: 'DM Mono', monospace; }
-
-  /* ── Responsive ── */
-  @media (max-width: 900px) {
-    .hero { padding: 0 32px 80px; }
-    .hero-title { font-size: 58px; }
-    .about-strip, .why-section { grid-template-columns: 1fr; padding: 80px 32px; }
-    .about-number { font-size: 100px; }
-    .services-section, .process-section, .tarifs-section { padding: 80px 32px; }
-    .services-grid, .tarifs-grid { grid-template-columns: 1fr; }
-    .process-grid { grid-template-columns: 1fr 1fr; }
-    .cta-section { margin: 0 32px 80px; padding: 48px 32px; }
-    .cta-title { font-size: 44px; }
-    footer { flex-direction: column; gap: 24px; padding: 40px 32px; text-align: center; }
-    nav { padding: 0 24px; }
-    .nav-links { display: none; }
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { cursor: none; scroll-behavior: smooth; }
+body { background: #0A0A0C; color: #F5F0E8; font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+#cur { position: fixed; width: 8px; height: 8px; background: #C49E61; border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); }
+#cur-r { position: fixed; width: 32px; height: 32px; border: 1px solid rgba(196,158,97,0.4); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); }
+body::before { content: ''; position: fixed; inset: 0; z-index: 1; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); opacity: 0.025; background-size: 160px; }
+.rv { opacity: 0; transform: translateY(36px); transition: opacity .85s cubic-bezier(.16,1,.3,1), transform .85s cubic-bezier(.16,1,.3,1); }
+.rv.on { opacity: 1; transform: none; }
+.d1 { transition-delay: .12s; } .d2 { transition-delay: .24s; } .d3 { transition-delay: .38s; } .d4 { transition-delay: .52s; }
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 68px; padding: 0 56px; display: flex; align-items: center; justify-content: space-between; background: rgba(10,10,12,0.88); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(196,158,97,0.08); }
+.nav-brand { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #F5F0E8; text-decoration: none; }
+.nav-brand span { font-style: italic; font-weight: 400; color: #C49E61; }
+.nav-links { display: flex; gap: 36px; align-items: center; }
+.nl { font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,240,232,0.5); text-decoration: none; transition: color .2s; }
+.nl:hover { color: #C49E61; }
+.nav-btn { background: #C49E61; color: #0A0A0C; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; padding: 10px 24px; border-radius: 3px; text-decoration: none; transition: background .2s; }
+.nav-btn:hover { background: #E8C97A; }
+.hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 68px 80px 96px; position: relative; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 65% 35%, rgba(196,158,97,0.07) 0%, transparent 65%); pointer-events: none; }
+.hero-vline { position: absolute; left: 52px; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, transparent, rgba(196,158,97,0.18) 25%, rgba(196,158,97,0.18) 75%, transparent); }
+.hero-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 5px; text-transform: uppercase; color: #C49E61; margin-bottom: 26px; display: flex; align-items: center; gap: 14px; }
+.hero-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: #C49E61; }
+h1.ht { font-family: 'Playfair Display', serif; font-size: clamp(68px, 8.5vw, 124px); font-weight: 700; line-height: 0.93; letter-spacing: -3px; color: #F5F0E8; }
+h1.ht em { font-style: italic; font-weight: 400; color: #C49E61; display: block; }
+.hero-sub { font-size: 17px; font-weight: 300; color: rgba(245,240,232,0.48); line-height: 1.75; max-width: 420px; margin-top: 36px; }
+.hero-btm { display: flex; align-items: flex-end; justify-content: space-between; margin-top: 56px; }
+.bp { background: #C49E61; color: #0A0A0C; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; padding: 15px 34px; border-radius: 3px; text-decoration: none; transition: all .25s; display: inline-block; }
+.bp:hover { background: #E8C97A; transform: translateY(-2px); }
+.bg { border: 1px solid rgba(196,158,97,0.28); color: #C49E61; font-size: 12px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; padding: 15px 34px; border-radius: 3px; text-decoration: none; transition: all .25s; display: inline-block; margin-left: 12px; }
+.bg:hover { border-color: #C49E61; background: rgba(196,158,97,0.05); }
+.sc-line { width: 1px; height: 52px; background: linear-gradient(to bottom, rgba(196,158,97,0.4), transparent); animation: sl 1.8s ease-in-out infinite; }
+@keyframes sl { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+.mq-wrap { border-top: 1px solid rgba(196,158,97,0.1); border-bottom: 1px solid rgba(196,158,97,0.1); padding: 16px 0; overflow: hidden; background: rgba(196,158,97,0.025); }
+.mq-track { display: flex; white-space: nowrap; animation: mq 24s linear infinite; }
+.mq-track:hover { animation-play-state: paused; }
+.mq-item { font-size: 11px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; color: rgba(196,158,97,0.45); padding: 0 36px; border-right: 1px solid rgba(196,158,97,0.12); flex-shrink: 0; }
+@keyframes mq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.sec { padding: 100px 80px; position: relative; z-index: 2; }
+.sec-sep { border-top: 1px solid rgba(196,158,97,0.08); }
+.sl { font-size: 10px; font-weight: 500; letter-spacing: 5px; text-transform: uppercase; color: #C49E61; margin-bottom: 18px; display: flex; align-items: center; gap: 12px; }
+.sl::before { content: ''; display: block; width: 22px; height: 1px; background: #C49E61; }
+.st { font-family: 'Playfair Display', serif; font-size: 50px; font-weight: 700; color: #F5F0E8; line-height: 1.08; letter-spacing: -1.5px; margin-bottom: 18px; }
+.st em { font-style: italic; color: #C49E61; }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.abn { font-family: 'Playfair Display', serif; font-size: 200px; font-weight: 700; color: rgba(196,158,97,0.05); line-height: 1; letter-spacing: -10px; user-select: none; }
+.at { font-size: 16px; font-weight: 300; color: rgba(245,240,232,0.52); line-height: 1.85; margin-bottom: 36px; }
+.stats { display: flex; gap: 44px; }
+.sv { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; color: #C49E61; line-height: 1; }
+.slbl { font-size: 11px; font-weight: 400; letter-spacing: 1px; color: rgba(245,240,232,0.36); margin-top: 5px; }
+.svc-hero { background: rgba(196,158,97,0.05); border: 1px solid rgba(196,158,97,0.28); border-left: 4px solid #C49E61; border-radius: 4px; padding: 40px 44px; margin-bottom: 3px; display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center; }
+.svc-htag { font-size: 10px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; color: #C49E61; margin-bottom: 10px; }
+.svc-htitle { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 700; color: #F5F0E8; margin-bottom: 10px; letter-spacing: -0.5px; }
+.svc-hdesc { font-size: 15px; font-weight: 300; color: rgba(245,240,232,0.52); line-height: 1.75; margin-bottom: 22px; max-width: 560px; }
+.svc-hbg { font-family: 'Playfair Display', serif; font-size: 88px; font-weight: 700; color: rgba(196,158,97,0.07); line-height: 1; letter-spacing: -3px; user-select: none; flex-shrink: 0; }
+.svc-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 3px; }
+.sc { background: rgba(196,158,97,0.03); border: 1px solid rgba(196,158,97,0.1); padding: 26px 22px; position: relative; transition: all .3s; overflow: hidden; }
+.sc:hover { background: rgba(196,158,97,0.07); border-color: rgba(196,158,97,0.26); transform: translateY(-3px); }
+.sc::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: #C49E61; transform: scaleY(0); transform-origin: bottom; transition: transform .3s; }
+.sc:hover::before { transform: scaleY(1); }
+.scn { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: #F5F0E8; margin-bottom: 8px; line-height: 1.2; }
+.scd { font-size: 11px; font-weight: 300; color: rgba(245,240,232,0.38); line-height: 1.55; margin-bottom: 12px; }
+.scb { font-size: 8px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: #C49E61; border: 1px solid rgba(196,158,97,0.3); padding: 3px 7px; border-radius: 2px; display: inline-block; }
+.proc-demo { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; margin-top: 52px; }
+.pstep { display: flex; gap: 18px; padding: 22px 0; border-bottom: 1px solid rgba(196,158,97,0.08); cursor: pointer; transition: all .2s; }
+.pstep:first-child { border-top: 1px solid rgba(196,158,97,0.08); }
+.psd { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid rgba(196,158,97,0.3); flex-shrink: 0; margin-top: 7px; transition: all .3s; }
+.pstep.on .psd { background: #C49E61; border-color: #C49E61; box-shadow: 0 0 10px rgba(196,158,97,0.35); }
+.pst { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 700; color: rgba(245,240,232,0.38); margin-bottom: 5px; transition: color .3s; }
+.pstep.on .pst { color: #F5F0E8; }
+.pss { font-size: 13px; font-weight: 300; color: rgba(245,240,232,0.28); line-height: 1.65; transition: color .3s; }
+.pstep.on .pss { color: rgba(245,240,232,0.52); }
+.mock-wrap { perspective: 1000px; }
+.mock-screen { background: #18181f; border-radius: 9px; border: 1px solid rgba(196,158,97,0.14); overflow: hidden; box-shadow: 0 32px 64px rgba(0,0,0,0.5); transform: rotateY(-5deg) rotateX(2deg); transition: transform .4s ease; }
+.mock-screen:hover { transform: rotateY(0) rotateX(0); }
+.mock-bar { background: #111116; padding: 9px 14px; display: flex; align-items: center; gap: 5px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.md { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.mock-body { height: 260px; position: relative; }
+.mslide { position: absolute; inset: 0; opacity: 0; transform: translateY(10px); transition: all .45s cubic-bezier(.16,1,.3,1); }
+.mslide.on { opacity: 1; transform: translateY(0); }
+.why-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 72px; align-items: start; }
+.why-sticky { position: sticky; top: 100px; }
+.wi { padding: 32px 0; border-bottom: 1px solid rgba(196,158,97,0.09); display: flex; gap: 24px; align-items: flex-start; }
+.wi:first-child { border-top: 1px solid rgba(196,158,97,0.09); }
+.wico { width: 40px; height: 40px; background: rgba(196,158,97,0.08); border: 1px solid rgba(196,158,97,0.18); border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 16px; }
+.wt { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: #F5F0E8; margin-bottom: 7px; }
+.wd { font-size: 14px; font-weight: 300; color: rgba(245,240,232,0.48); line-height: 1.72; }
+.tg { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 20px; }
+.tc { background: rgba(196,158,97,0.04); border: 1px solid rgba(196,158,97,0.12); border-radius: 4px; padding: 34px 30px; transition: all .3s; position: relative; }
+.tc:hover { border-color: rgba(196,158,97,0.32); background: rgba(196,158,97,0.07); }
+.tc.feat { border-color: rgba(196,158,97,0.38); background: rgba(196,158,97,0.07); }
+.tc.feat::before { content: 'POPULAIRE'; position: absolute; top: 14px; right: 14px; font-size: 8px; font-weight: 500; letter-spacing: 2px; color: #0A0A0C; background: #C49E61; padding: 3px 9px; border-radius: 2px; }
+.tn { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #F5F0E8; margin-bottom: 6px; }
+.td { font-size: 13px; font-weight: 300; color: rgba(245,240,232,0.42); margin-bottom: 18px; line-height: 1.6; }
+.tdl { font-size: 11px; font-weight: 400; color: rgba(245,240,232,0.28); letter-spacing: 1px; margin-bottom: 20px; }
+.tfs { display: flex; flex-direction: column; gap: 9px; }
+.tf { font-size: 13px; font-weight: 300; color: rgba(245,240,232,0.52); display: flex; gap: 9px; align-items: flex-start; }
+.tf::before { content: '✦'; color: #C49E61; font-size: 9px; margin-top: 3px; flex-shrink: 0; }
+.tnote { margin-top: 20px; padding: 16px 22px; background: rgba(196,158,97,0.05); border: 1px solid rgba(196,158,97,0.18); border-radius: 3px; text-align: center; font-size: 14px; font-weight: 300; color: rgba(245,240,232,0.62); }
+.tnote span { color: #C49E61; font-weight: 500; }
+.testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 48px; }
+.tcard { background: rgba(196,158,97,0.03); border: 1px solid rgba(196,158,97,0.1); border-radius: 4px; padding: 30px 26px; display: flex; flex-direction: column; gap: 16px; transition: all .3s; position: relative; overflow: hidden; }
+.tcard:hover { background: rgba(196,158,97,0.07); border-color: rgba(196,158,97,0.26); transform: translateY(-3px); }
+.tcard.feat { border-color: rgba(196,158,97,0.32); background: rgba(196,158,97,0.06); }
+.tcard::before { content: '\201C'; position: absolute; bottom: 8px; right: 16px; font-family: 'Playfair Display', serif; font-size: 72px; color: rgba(196,158,97,0.06); line-height: 1; pointer-events: none; }
+.thead { display: flex; gap: 12px; align-items: center; }
+.tav { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 1px solid rgba(196,158,97,0.28); }
+.tname { font-size: 14px; font-weight: 500; color: #F5F0E8; margin-bottom: 2px; }
+.trole { font-size: 11px; font-weight: 300; color: rgba(245,240,232,0.34); margin-bottom: 4px; }
+.tstars { color: #C49E61; font-size: 11px; letter-spacing: 2px; }
+.tquote { font-size: 13px; font-weight: 300; color: rgba(245,240,232,0.58); line-height: 1.8; font-style: italic; }
+.cta-box { margin: 0 80px 96px; border: 1px solid rgba(196,158,97,0.15); border-radius: 6px; padding: 76px 80px; background: rgba(196,158,97,0.025); position: relative; overflow: hidden; }
+.cta-box::before { content: ''; position: absolute; top: -180px; right: -180px; width: 460px; height: 460px; border-radius: 50%; background: radial-gradient(circle, rgba(196,158,97,0.07) 0%, transparent 70%); pointer-events: none; }
+.cta-ey { font-size: 10px; font-weight: 500; letter-spacing: 5px; text-transform: uppercase; color: rgba(196,158,97,0.55); margin-bottom: 18px; }
+.cta-t { font-family: 'Playfair Display', serif; font-size: 60px; font-weight: 700; color: #F5F0E8; line-height: 1.05; letter-spacing: -2px; margin-bottom: 14px; }
+.cta-t em { font-style: italic; color: #C49E61; }
+.cta-s { font-size: 17px; font-weight: 300; color: rgba(245,240,232,0.48); margin-bottom: 44px; max-width: 480px; line-height: 1.75; }
+.cta-row { display: flex; gap: 48px; margin-top: 48px; padding-top: 48px; border-top: 1px solid rgba(196,158,97,0.1); }
+.ctal { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(196,158,97,0.38); margin-bottom: 5px; }
+.ctav { font-size: 16px; font-weight: 400; color: #C49E61; }
+footer { padding: 44px 80px; border-top: 1px solid rgba(196,158,97,0.1); display: flex; align-items: center; justify-content: space-between; }
+.ftb { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: rgba(245,240,232,0.35); }
+.ftb span { font-style: italic; color: rgba(196,158,97,0.4); }
+.ftlinks { display: flex; gap: 28px; }
+.ftl { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(245,240,232,0.28); text-decoration: none; transition: color .2s; }
+.ftl:hover { color: #C49E61; }
+.ftc { font-size: 11px; color: rgba(245,240,232,0.18); font-family: 'DM Mono', monospace; }
+@media (max-width: 900px) {
+  .hero { padding: 68px 28px 72px; }
+  h1.ht { font-size: 52px; letter-spacing: -1.5px; }
+  .sec { padding: 72px 28px; }
+  .about-grid, .proc-demo, .why-grid { grid-template-columns: 1fr; }
+  .svc-grid { grid-template-columns: 1fr 1fr; }
+  .tg, .testi-grid { grid-template-columns: 1fr; }
+  .svc-hero { grid-template-columns: 1fr; }
+  .svc-hbg { display: none; }
+  .cta-box { margin: 0 28px 72px; padding: 44px 28px; }
+  .cta-t { font-size: 40px; }
+  .cta-row { flex-direction: column; gap: 20px; }
+  footer { flex-direction: column; gap: 20px; padding: 36px 28px; text-align: center; }
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+}
 </style>
 </head>
 <body>
 
-<!-- Cursor -->
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
+<div id="cur"></div>
+<div id="cur-r"></div>
 
-<!-- Nav -->
 <nav>
-  <div class="nav-brand">Slide<span>Atelier</span></div>
+  <a href="#" class="nav-brand">Slide<span>Atelier</span></a>
   <div class="nav-links">
-    <a href="#services" class="nav-link">Services</a>
-    <a href="#process" class="nav-link">Process</a>
-    <a href="#tarifs" class="nav-link">Tarifs</a>
-    <a href="https://wa.me/212614163934" class="nav-cta" target="_blank">Devis gratuit</a>
+    <a href="#services" class="nl">Services</a>
+    <a href="#process" class="nl">Process</a>
+    <a href="#tarifs" class="nl">Tarifs</a>
+    <a href="https://wa.me/212614163934" class="nav-btn" target="_blank">Devis gratuit</a>
   </div>
 </nav>
 
-<!-- Hero -->
-<section class="hero" style="padding-top: 72px;">
+<section class="hero">
   <div class="hero-bg"></div>
-  <div class="hero-line-v"></div>
-
-  <div class="reveal">
-    <div class="hero-counter">01 / ACCUEIL</div>
-    <div class="hero-eyebrow">Services Professionnels · Maroc</div>
-  </div>
-
-  <h1 class="hero-title reveal reveal-delay-1">
-    Vos documents,
-    <em>redessinés.</em>
-  </h1>
-
-  <p class="hero-subtitle reveal reveal-delay-2">
-    De la thèse médicale au pitch deck executive — chaque livrable conçu pour convaincre, défendre et marquer les esprits.
-  </p>
-
-  <div class="hero-bottom reveal reveal-delay-3">
-    <div class="hero-cta-group">
-      <a href="https://wa.me/212614163934" class="btn-primary" target="_blank">Démarrer un projet</a>
-      <a href="#services" class="btn-ghost">Voir les services</a>
+  <div class="hero-vline"></div>
+  <div class="rv"><div class="hero-eyebrow">Services Professionnels · Maroc</div></div>
+  <h1 class="ht rv d1">Vos documents,<em>redessinés.</em></h1>
+  <p class="hero-sub rv d2">De la thèse médicale au pitch deck executive — chaque livrable conçu pour convaincre, défendre et marquer les esprits.</p>
+  <div class="hero-btm rv d3">
+    <div>
+      <a href="https://wa.me/212614163934" class="bp" target="_blank">Démarrer un projet</a>
+      <a href="#services" class="bg">Voir les services</a>
     </div>
-    <div class="hero-scroll">
-      <span class="hero-tag">SCROLL</span>
-      <div class="hero-scroll-line"></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+      <div class="sc-line"></div>
+      <span style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,240,232,0.28);">Scroll</span>
     </div>
   </div>
 </section>
 
-<!-- Marquee -->
-<div class="marquee-wrap">
-  <div class="marquee-track">
-    <span class="marquee-item">Présentation de thèse</span>
-    <span class="marquee-item">CV Professionnel</span>
-    <span class="marquee-item">Poster Scientifique</span>
-    <span class="marquee-item">Pitch Deck</span>
-    <span class="marquee-item">Soutenance PFE</span>
-    <span class="marquee-item">Lettre de Motivation</span>
-    <span class="marquee-item">Rapport Professionnel</span>
-    <span class="marquee-item">PPTX · PDF · Word</span>
-    <span class="marquee-item">Présentation de thèse</span>
-    <span class="marquee-item">CV Professionnel</span>
-    <span class="marquee-item">Poster Scientifique</span>
-    <span class="marquee-item">Pitch Deck</span>
-    <span class="marquee-item">Soutenance PFE</span>
-    <span class="marquee-item">Lettre de Motivation</span>
-    <span class="marquee-item">Rapport Professionnel</span>
-    <span class="marquee-item">PPTX · PDF · Word</span>
+<div class="mq-wrap">
+  <div class="mq-track">
+    <span class="mq-item">Présentation de thèse</span><span class="mq-item">CV Professionnel</span><span class="mq-item">Poster Scientifique</span><span class="mq-item">Pitch Deck</span><span class="mq-item">Soutenance PFE</span><span class="mq-item">Lettre de Motivation</span><span class="mq-item">PPTX · PDF · Word</span><span class="mq-item">Révisions incluses</span><span class="mq-item">Présentation de thèse</span><span class="mq-item">CV Professionnel</span><span class="mq-item">Poster Scientifique</span><span class="mq-item">Pitch Deck</span><span class="mq-item">Soutenance PFE</span><span class="mq-item">Lettre de Motivation</span><span class="mq-item">PPTX · PDF · Word</span><span class="mq-item">Révisions incluses</span>
   </div>
 </div>
 
-<!-- About -->
-<section class="about-strip" id="about">
-  <div class="about-number reveal">01</div>
-  <div class="about-content">
-    <div class="section-label reveal">À propos</div>
-    <h2 class="about-title reveal reveal-delay-1">
-      Le design au service<br>de <em>votre excellence</em>
-    </h2>
-    <p class="about-text reveal reveal-delay-2">
-      SlideAtelier est un studio de création de documents académiques et professionnels basé au Maroc. Nous transformons vos contenus en livrables qui impressionnent — des slides qui défendent, des CVs qui convainquent, des posters qui marquent.
-    </p>
-    <div class="stats-row reveal reveal-delay-3">
-      <div class="stat">
-        <div class="stat-val">100%</div>
-        <div class="stat-lbl">Sur-mesure</div>
-      </div>
-      <div class="stat">
-        <div class="stat-val">24h</div>
-        <div class="stat-lbl">Délai minimum</div>
-      </div>
-      <div class="stat">
-        <div class="stat-val">∞</div>
-        <div class="stat-lbl">Révisions incluses</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Services -->
-<section class="services-section" id="services">
-  <div class="services-header reveal">
+<section class="sec" id="about">
+  <div class="about-grid">
+    <div class="abn rv">01</div>
     <div>
-      <div class="section-label">02 / Services</div>
-      <h2 class="services-title">Ce que<br>nous <em>créons</em></h2>
+      <div class="sl rv">À propos</div>
+      <h2 class="st rv d1">Le design au service<br>de <em>votre excellence</em></h2>
+      <p class="at rv d2">SlideAtelier est un studio de création de documents académiques et professionnels basé au Maroc. Nous transformons vos contenus en livrables qui impressionnent — des slides qui défendent, des CVs qui convainquent, des posters qui marquent.</p>
+      <div class="stats rv d3">
+        <div><div class="sv">100%</div><div class="slbl">Sur-mesure</div></div>
+        <div><div class="sv">24h</div><div class="slbl">Délai minimum</div></div>
+        <div><div class="sv">∞</div><div class="slbl">Révisions incluses</div></div>
+      </div>
     </div>
-    <div class="services-count">06 services</div>
   </div>
-  <div class="services-grid">
-    <div class="service-card reveal">
-      <div class="service-card-num">01</div>
-      <div class="service-card-name">Présentation de thèse</div>
-      <div class="service-card-desc">Médecine, droit, ingénierie, sciences. Design académique rigoureux, slides claires et impact visuel fort pour votre soutenance.</div>
-      <div class="service-card-meta">
-        <div>
-          <div class="service-cta-mini" style="font-size:13px;font-weight:500;color:#C49E61;letter-spacing:1px;margin-bottom:6px;">Devis gratuit →</div>
-          <div class="service-delay">Délai : 2–4 jours</div>
-        </div>
-        <div class="service-badge">Spécialité</div>
+</section>
+
+<section class="sec sec-sep" id="services">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;">
+    <div>
+      <div class="sl rv">02 / Services</div>
+      <h2 class="st rv d1">Ce que nous <em>créons</em></h2>
+    </div>
+    <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:rgba(245,240,232,0.22);" class="rv d1">06 services</div>
+  </div>
+  <div class="svc-hero rv d2">
+    <div>
+      <div class="svc-htag">★ Service phare</div>
+      <div class="svc-htitle">Présentation de thèse</div>
+      <div class="svc-hdesc">Médecine, droit, ingénierie, sciences. Design académique rigoureux, slides claires, animations professionnelles. Votre soutenance mérite le meilleur.</div>
+      <div style="display:flex;gap:20px;align-items:center;">
+        <a href="https://wa.me/212614163934" class="bp" target="_blank" style="font-size:11px;padding:12px 26px;">Devis gratuit →</a>
+        <span style="font-size:11px;color:rgba(245,240,232,0.28);letter-spacing:1px;">Délai : 2–4 jours</span>
       </div>
     </div>
-    <div class="service-card reveal reveal-delay-1">
-      <div class="service-card-num">02</div>
-      <div class="service-card-name">CV Professionnel</div>
-      <div class="service-card-desc">Design premium, ATS-optimisé, adapté à votre secteur et vos objectifs de carrière. Lettre de motivation incluse sur demande.</div>
-      <div class="service-card-meta">
-        <div>
-          <div class="service-cta-mini" style="font-size:13px;font-weight:500;color:#C49E61;letter-spacing:1px;margin-bottom:6px;">Devis gratuit →</div>
-          <div class="service-delay">Délai : 24h</div>
-        </div>
-        <div class="service-badge">Populaire</div>
-      </div>
+    <div class="svc-hbg">Thèse</div>
+  </div>
+  <div class="svc-grid rv d3">
+    <div class="sc"><div class="scn">CV Professionnel</div><div class="scd">Design premium · ATS-optimisé · 24h</div><div class="scb">Populaire</div></div>
+    <div class="sc"><div class="scn">Poster scientifique</div><div class="scd">Conférences · Format A0/A1 · 2–3 jours</div></div>
+    <div class="sc"><div class="scn">Soutenance PFE / Master</div><div class="scd">Toutes filières · Animations · 2–3 jours</div></div>
+    <div class="sc"><div class="scn">Pitch deck &amp; rapport</div><div class="scd">Impact visuel fort · Sur-mesure · 2–4 jours</div></div>
+    <div class="sc"><div class="scn">Lettre de motivation</div><div class="scd">Emploi · Études · Immigration · 24h</div></div>
+  </div>
+</section>
+
+<section class="sec sec-sep" id="process">
+  <div class="sl rv">03 / Process</div>
+  <h2 class="st rv d1">De votre idée au document <em>final</em></h2>
+  <div class="proc-demo">
+    <div class="rv d2">
+      <div class="pstep on" data-s="0"><div class="psd"></div><div><div class="pst">Vous nous contactez</div><div class="pss">WhatsApp ou email — décrivez votre besoin. Réponse sous 2h.</div></div></div>
+      <div class="pstep" data-s="1"><div class="psd"></div><div><div class="pst">Devis gratuit &amp; personnalisé</div><div class="pss">Prix clair, délai précis, paiement après validation uniquement.</div></div></div>
+      <div class="pstep" data-s="2"><div class="psd"></div><div><div class="pst">Vous envoyez le contenu</div><div class="pss">Plan, textes, données — via WhatsApp, email ou Google Drive.</div></div></div>
+      <div class="pstep" data-s="3"><div class="psd"></div><div><div class="pst">Livraison &amp; révisions</div><div class="pss">PPTX · PDF · Word. Révisions incluses jusqu'à satisfaction.</div></div></div>
     </div>
-    <div class="service-card reveal reveal-delay-2">
-      <div class="service-card-num">03</div>
-      <div class="service-card-name">Poster scientifique</div>
-      <div class="service-card-desc">Conférences et colloques. Format A0/A1, mise en page claire et hiérarchie visuelle optimale pour vos données.</div>
-      <div class="service-card-meta">
-        <div>
-          <div class="service-cta-mini" style="font-size:13px;font-weight:500;color:#C49E61;letter-spacing:1px;margin-bottom:6px;">Devis gratuit →</div>
-          <div class="service-delay">Délai : 2–3 jours</div>
+    <div class="mock-wrap rv d3">
+      <div class="mock-screen">
+        <div class="mock-bar">
+          <span class="md" style="background:#ff5f56"></span>
+          <span class="md" style="background:#febc2e"></span>
+          <span class="md" style="background:#28c840"></span>
+          <span style="font-size:10px;color:rgba(255,255,255,0.28);margin-left:10px;font-family:'DM Mono',monospace;">slideatelier.pptx</span>
         </div>
-      </div>
-    </div>
-    <div class="service-card reveal reveal-delay-3">
-      <div class="service-card-num">04</div>
-      <div class="service-card-name">Soutenance PFE / Master</div>
-      <div class="service-card-desc">Toutes filières, design soigné pour une soutenance de fin d'études réussie. Animations et transitions incluses.</div>
-      <div class="service-card-meta">
-        <div>
-          <div class="service-cta-mini" style="font-size:13px;font-weight:500;color:#C49E61;letter-spacing:1px;margin-bottom:6px;">Devis gratuit →</div>
-          <div class="service-delay">Délai : 2–3 jours</div>
-        </div>
-      </div>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-card-num">05</div>
-      <div class="service-card-name">Pitch deck & rapport</div>
-      <div class="service-card-desc">Présenter une idée, un projet ou des résultats avec un impact visuel fort. Structure narrative et design orienté conversion.</div>
-      <div class="service-card-meta">
-        <div>
-          <div class="service-cta-mini" style="font-size:13px;font-weight:500;color:#C49E61;letter-spacing:1px;margin-bottom:6px;">Devis gratuit →</div>
-          <div class="service-delay">Délai : 2–4 jours</div>
-        </div>
-      </div>
-    </div>
-    <div class="service-card reveal reveal-delay-1">
-      <div class="service-card-num">06</div>
-      <div class="service-card-name">Lettre de motivation</div>
-      <div class="service-card-desc">Rédigée et mise en page pour se démarquer — études, emploi, immigration. Adaptation selon le destinataire.</div>
-      <div class="service-card-meta">
-        <div>
-          <div class="service-cta-mini" style="font-size:13px;font-weight:500;color:#C49E61;letter-spacing:1px;margin-bottom:6px;">Devis gratuit →</div>
-          <div class="service-delay">Délai : 24h</div>
+        <div class="mock-body">
+          <div class="mslide on" id="ms0" style="background:#0D1B3E;padding:28px 30px;display:flex;flex-direction:column;justify-content:center;height:100%;">
+            <div style="font-size:9px;letter-spacing:3px;color:#C49E61;text-transform:uppercase;margin-bottom:10px;">SlideAtelier</div>
+            <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:6px;">Bonjour 👋</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.48);line-height:1.6;margin-bottom:18px;">Décrivez-nous votre projet sur WhatsApp ou par email.</div>
+            <div style="background:#C49E61;color:#0D1B3E;font-size:10px;font-weight:500;padding:7px 16px;border-radius:3px;display:inline-block;width:fit-content;">+212 614-163934</div>
+          </div>
+          <div class="mslide" id="ms1" style="background:#111118;padding:28px 30px;display:flex;flex-direction:column;justify-content:center;height:100%;">
+            <div style="font-size:9px;letter-spacing:3px;color:#C49E61;text-transform:uppercase;margin-bottom:14px;">Devis gratuit</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;justify-content:space-between;padding:9px 12px;background:rgba(196,158,97,0.08);border:1px solid rgba(196,158,97,0.2);border-radius:3px;"><span style="font-size:12px;color:#fff;">Présentation de thèse</span><span style="font-size:12px;color:#C49E61;">Sur devis</span></div>
+              <div style="display:flex;justify-content:space-between;padding:9px 12px;background:rgba(196,158,97,0.04);border:1px solid rgba(196,158,97,0.1);border-radius:3px;"><span style="font-size:12px;color:rgba(255,255,255,0.5);">Délai estimé</span><span style="font-size:12px;color:rgba(255,255,255,0.5);">2–4 jours</span></div>
+              <div style="display:flex;justify-content:space-between;padding:9px 12px;background:rgba(40,200,64,0.07);border:1px solid rgba(40,200,64,0.18);border-radius:3px;"><span style="font-size:12px;color:rgba(255,255,255,0.5);">Paiement</span><span style="font-size:12px;color:#28c840;">Après validation</span></div>
+            </div>
+          </div>
+          <div class="mslide" id="ms2" style="background:#111118;padding:28px 30px;display:flex;flex-direction:column;justify-content:center;height:100%;">
+            <div style="font-size:9px;letter-spacing:3px;color:#C49E61;text-transform:uppercase;margin-bottom:14px;">Contenu reçu ✓</div>
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <div style="display:flex;align-items:center;gap:9px;padding:7px 11px;background:rgba(40,200,64,0.07);border:1px solid rgba(40,200,64,0.18);border-radius:3px;"><span style="color:#28c840;font-size:11px;">✓</span><span style="font-size:11px;color:rgba(255,255,255,0.65);">Plan de thèse (PDF)</span></div>
+              <div style="display:flex;align-items:center;gap:9px;padding:7px 11px;background:rgba(40,200,64,0.07);border:1px solid rgba(40,200,64,0.18);border-radius:3px;"><span style="color:#28c840;font-size:11px;">✓</span><span style="font-size:11px;color:rgba(255,255,255,0.65);">Données &amp; graphiques</span></div>
+              <div style="display:flex;align-items:center;gap:9px;padding:7px 11px;background:rgba(40,200,64,0.07);border:1px solid rgba(40,200,64,0.18);border-radius:3px;"><span style="color:#28c840;font-size:11px;">✓</span><span style="font-size:11px;color:rgba(255,255,255,0.65);">Images &amp; références</span></div>
+              <div style="display:flex;align-items:center;gap:9px;padding:7px 11px;background:rgba(196,158,97,0.05);border:1px solid rgba(196,158,97,0.15);border-radius:3px;"><span style="color:#C49E61;font-size:11px;">⟳</span><span style="font-size:11px;color:rgba(255,255,255,0.42);">Création en cours...</span></div>
+            </div>
+          </div>
+          <div class="mslide" id="ms3" style="background:#0D1B3E;padding:20px 24px;display:flex;flex-direction:column;height:100%;">
+            <div style="background:#C49E61;height:4px;width:100%;border-radius:2px;margin-bottom:12px;"></div>
+            <div style="font-size:8px;letter-spacing:2px;color:#C49E61;text-transform:uppercase;margin-bottom:7px;">Thèse médecine · Livré ✓</div>
+            <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#fff;margin-bottom:4px;">Syndrome des<br><span style="font-style:italic;color:#C49E61;">Antiphospholipides</span></div>
+            <div style="margin-top:auto;display:flex;gap:7px;">
+              <div style="flex:1;background:rgba(196,158,97,0.14);border:1px solid rgba(196,158,97,0.24);border-radius:3px;padding:6px;text-align:center;"><div style="font-size:15px;font-weight:700;color:#C49E61;">32</div><div style="font-size:8px;color:rgba(255,255,255,0.36);">Slides</div></div>
+              <div style="flex:1;background:rgba(196,158,97,0.14);border:1px solid rgba(196,158,97,0.24);border-radius:3px;padding:6px;text-align:center;"><div style="font-size:15px;font-weight:700;color:#C49E61;">✓</div><div style="font-size:8px;color:rgba(255,255,255,0.36);">PPTX+PDF</div></div>
+              <div style="flex:1;background:rgba(40,200,64,0.09);border:1px solid rgba(40,200,64,0.22);border-radius:3px;padding:6px;text-align:center;"><div style="font-size:15px;font-weight:700;color:#28c840;">∞</div><div style="font-size:8px;color:rgba(255,255,255,0.36);">Révisions</div></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Process -->
-<section class="process-section" id="process">
-  <div class="section-label reveal">03 / Process</div>
-  <h2 class="about-title reveal reveal-delay-1">Comment ça <em>fonctionne</em></h2>
-  <div class="process-grid reveal reveal-delay-2">
-    <div class="process-step">
-      <div class="process-num">01</div>
-      <div class="process-title">Vous nous contactez</div>
-      <div class="process-desc">WhatsApp ou email — décrivez votre besoin en quelques mots. Nous répondons sous 2h.</div>
+<section class="sec sec-sep">
+  <div class="why-grid">
+    <div class="why-sticky">
+      <div class="sl rv">04 / Pourquoi nous</div>
+      <h2 class="st rv d1">La différence<br><em>SlideAtelier</em></h2>
+      <p style="font-size:16px;font-weight:300;color:rgba(245,240,232,0.44);line-height:1.8;max-width:340px;margin-top:20px;" class="rv d2">Nous ne livrons pas des templates. Chaque document est taillé pour votre contexte, votre contenu et votre objectif.</p>
     </div>
-    <div class="process-step">
-      <div class="process-num">02</div>
-      <div class="process-title">Devis gratuit</div>
-      <div class="process-desc">Prix clair, délai précis, sans engagement. Paiement uniquement après validation finale.</div>
-    </div>
-    <div class="process-step">
-      <div class="process-num">03</div>
-      <div class="process-title">Vous envoyez le contenu</div>
-      <div class="process-desc">Plan, textes, données — via WhatsApp, email ou Google Drive. Nous gérons le reste.</div>
-    </div>
-    <div class="process-step">
-      <div class="process-num">04</div>
-      <div class="process-title">Livraison & révisions</div>
-      <div class="process-desc">Document livré en PPTX, PDF ou Word. Révisions incluses jusqu'à votre satisfaction totale.</div>
+    <div>
+      <div class="wi rv"><div class="wico">✦</div><div><div class="wt">Design sur-mesure</div><div class="wd">Chaque document créé de zéro pour vous. Pas de templates recyclés. Votre identité, votre contenu, notre exécution.</div></div></div>
+      <div class="wi rv d1"><div class="wico">⚡</div><div><div class="wt">Livraison rapide</div><div class="wd">CVs en 24h, thèses en 2–4 jours. Nous respectons vos délais de soutenance et d'entretien.</div></div></div>
+      <div class="wi rv d2"><div class="wico">↺</div><div><div class="wt">Révisions illimitées</div><div class="wd">Les révisions sont incluses jusqu'à ce que vous soyez 100% satisfait. Paiement après validation.</div></div></div>
+      <div class="wi rv d3"><div class="wico">🔒</div><div><div class="wt">Confidentialité totale</div><div class="wd">Vos données, résultats de recherche et informations personnelles restent strictement confidentiels.</div></div></div>
     </div>
   </div>
 </section>
 
-<!-- Why us -->
-<section class="why-section">
-  <div class="why-sticky">
-    <div class="section-label reveal">04 / Pourquoi nous</div>
-    <h2 class="why-big-title reveal reveal-delay-1">La différence<br><em>SlideAtelier</em></h2>
-    <p class="why-big-sub reveal reveal-delay-2">Nous ne livrons pas des templates. Nous créons des documents taillés pour votre contexte, votre contenu et votre objectif.</p>
+<section class="sec sec-sep" id="tarifs">
+  <div class="sl rv">05 / Tarifs</div>
+  <h2 class="st rv d1">Tarifs <em>sur devis</em></h2>
+  <p style="font-size:16px;font-weight:300;color:rgba(245,240,232,0.46);max-width:540px;line-height:1.8;margin-bottom:0;" class="rv d2">Chaque projet est unique. Contactez-nous pour un devis gratuit et personnalisé en moins de 2 heures.</p>
+  <div class="tg">
+    <div class="tc rv"><div class="tn">Présentation de thèse</div><div class="td">Médecine · Droit · Ingénierie · Sciences</div><div class="tdl">Délai : 2–4 jours</div><div class="tfs"><div class="tf">Slides illimitées</div><div class="tf">Animations &amp; transitions</div><div class="tf">Fichier PPTX + PDF</div><div class="tf">Révisions incluses</div></div></div>
+    <div class="tc feat rv d1"><div class="tn">CV Professionnel</div><div class="td">Design premium · ATS-optimisé</div><div class="tdl">Délai : 24h</div><div class="tfs"><div class="tf">Design sur-mesure</div><div class="tf">Optimisé ATS</div><div class="tf">Fichier PDF + Word</div><div class="tf">Lettre de motivation en option</div></div></div>
+    <div class="tc rv d2"><div class="tn">Poster scientifique</div><div class="td">Conférences · Format A0/A1</div><div class="tdl">Délai : 2–3 jours</div><div class="tfs"><div class="tf">Format A0 ou A1</div><div class="tf">Haute résolution print</div><div class="tf">Fichier PDF + source</div><div class="tf">Révisions incluses</div></div></div>
   </div>
-  <div class="why-list">
-    <div class="why-item reveal">
-      <div class="why-icon">✦</div>
-      <div>
-        <div class="why-item-title">Design sur-mesure</div>
-        <div class="why-item-desc">Chaque document est créé de zéro pour vous. Pas de templates recyclés, pas de designs génériques. Votre identité, votre contenu, notre exécution.</div>
-      </div>
+  <div class="tnote rv d3"><span>Devis gratuit</span> en moins de 2h · Paiement après validation · <span>−10%</span> pour 2 services ou plus</div>
+</section>
+
+<section class="sec sec-sep" id="avis">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;">
+    <div>
+      <div class="sl rv">06 / Avis clients</div>
+      <h2 class="st rv d1">Ils nous ont <em>fait confiance</em></h2>
     </div>
-    <div class="why-item reveal reveal-delay-1">
-      <div class="why-icon">⚡</div>
-      <div>
-        <div class="why-item-title">Livraison rapide</div>
-        <div class="why-item-desc">CVs en 24h, thèses en 2–4 jours. Nous respectons vos délais de soutenance et d'entretien, même les urgences.</div>
-      </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:24px;" class="rv d2">
+      <div style="color:#C49E61;font-size:18px;letter-spacing:2px;margin-bottom:4px;">★★★★★</div>
+      <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:#C49E61;">5.0</div>
+      <div style="font-size:10px;letter-spacing:2px;color:rgba(245,240,232,0.28);text-transform:uppercase;">Note moyenne</div>
     </div>
-    <div class="why-item reveal reveal-delay-2">
-      <div class="why-icon">↺</div>
-      <div>
-        <div class="why-item-title">Révisions illimitées</div>
-        <div class="why-item-desc">Pas de surprise sur la facture. Les révisions sont incluses jusqu'à ce que vous soyez 100% satisfait. Paiement après validation.</div>
-      </div>
-    </div>
-    <div class="why-item reveal reveal-delay-3">
-      <div class="why-icon">🔒</div>
-      <div>
-        <div class="why-item-title">Confidentialité totale</div>
-        <div class="why-item-desc">Vos données, résultats de recherche et informations personnelles restent strictement confidentiels. Toujours.</div>
-      </div>
-    </div>
+  </div>
+  <div class="testi-grid">
+    <div class="tcard rv"><div class="thead"><div class="tav"><svg viewBox="0 0 40 40" width="40" height="40"><rect width="40" height="40" fill="#1a1205"/><circle cx="20" cy="15" r="7" fill="#C49E61" opacity="0.85"/><ellipse cx="20" cy="34" rx="13" ry="9" fill="#C49E61" opacity="0.65"/></svg></div><div><div class="tname">Hajar Benali</div><div class="trole">Docteure en médecine · CHU Rabat</div><div class="tstars">★★★★★</div></div></div><div class="tquote">"Ma présentation de thèse était magnifique. Le jury a remarqué la qualité du design dès le début. J'ai eu les félicitations — je recommande SlideAtelier à tous les étudiants en médecine."</div></div>
+    <div class="tcard feat rv d1"><div class="thead"><div class="tav"><svg viewBox="0 0 40 40" width="40" height="40"><rect width="40" height="40" fill="#0d1a0d"/><circle cx="20" cy="15" r="7" fill="#C49E61" opacity="0.85"/><ellipse cx="20" cy="34" rx="13" ry="9" fill="#C49E61" opacity="0.65"/></svg></div><div><div class="tname">Youssef El Fassi</div><div class="trole">Ingénieur informatique · Casablanca</div><div class="tstars">★★★★★</div></div></div><div class="tquote">"Mon CV a été entièrement repensé — j'ai décroché un entretien chez une multinationale à Casablanca la semaine suivante. Design professionnel et sobre, exactement ce qu'il fallait."</div></div>
+    <div class="tcard rv d2"><div class="thead"><div class="tav"><svg viewBox="0 0 40 40" width="40" height="40"><rect width="40" height="40" fill="#0d0d1a"/><circle cx="20" cy="15" r="7" fill="#C49E61" opacity="0.85"/><ellipse cx="20" cy="34" rx="13" ry="9" fill="#C49E61" opacity="0.65"/></svg></div><div><div class="tname">Salma Amrani</div><div class="trole">Chercheuse · Université Mohamed V</div><div class="tstars">★★★★★</div></div></div><div class="tquote">"Poster scientifique réalisé en 48h pour une conférence internationale. Qualité impeccable, mise en page claire. Les révisions faites sans aucun souci. Très professionnel."</div></div>
+    <div class="tcard rv"><div class="thead"><div class="tav"><svg viewBox="0 0 40 40" width="40" height="40"><rect width="40" height="40" fill="#1a0d0d"/><circle cx="20" cy="15" r="7" fill="#C49E61" opacity="0.85"/><ellipse cx="20" cy="34" rx="13" ry="9" fill="#C49E61" opacity="0.65"/></svg></div><div><div class="tname">Omar Benhaddou</div><div class="trole">Étudiant ingénieur · ENSA Marrakech</div><div class="tstars">★★★★★</div></div></div><div class="tquote">"Soutenance PFE en urgence, 48h avant la date. SlideAtelier a livré un travail remarquable dans les délais. Mes encadrants ont été impressionnés par la présentation."</div></div>
+    <div class="tcard feat rv d1"><div class="thead"><div class="tav"><svg viewBox="0 0 40 40" width="40" height="40"><rect width="40" height="40" fill="#0d1a15"/><circle cx="20" cy="15" r="7" fill="#C49E61" opacity="0.85"/><ellipse cx="20" cy="34" rx="13" ry="9" fill="#C49E61" opacity="0.65"/></svg></div><div><div class="tname">Nadia Zouaoui</div><div class="trole">Master Paris Dauphine · Étudiante</div><div class="tstars">★★★★★</div></div></div><div class="tquote">"CV + lettre de motivation pour un master en France, livré en 24h. La qualité m'a permis d'obtenir mon admission. Merci infiniment !"</div></div>
+    <div class="tcard rv d2"><div class="thead"><div class="tav"><svg viewBox="0 0 40 40" width="40" height="40"><rect width="40" height="40" fill="#121218"/><circle cx="20" cy="15" r="7" fill="#C49E61" opacity="0.85"/><ellipse cx="20" cy="34" rx="13" ry="9" fill="#C49E61" opacity="0.65"/></svg></div><div><div class="tname">Khalid Moussaoui</div><div class="trole">Fondateur startup · Technopark Rabat</div><div class="tstars">★★★★★</div></div></div><div class="tquote">"Pitch deck pour lever des fonds. Design haut de gamme, structuré et convaincant. On a obtenu notre financement. SlideAtelier fait partie de notre équipe."</div></div>
   </div>
 </section>
 
-<!-- Tarifs -->
-<section class="tarifs-section" id="tarifs">
-  <div class="section-label reveal">05 / Tarifs</div>
-  <h2 class="about-title reveal reveal-delay-1">Tarifs <em>sur devis</em></h2>
-  <div class="tarifs-grid">
-    <div class="tarif-card reveal">
-      <div class="tarif-name">Présentation de thèse</div>
-      <div class="tarif-desc">Médecine · Droit · Ingénierie · Sciences</div>
-      <div class="tarif-price-wrap"><div class="tarif-delay">Délai : 2–4 jours</div></div>
-      <div class="tarif-features">
-        <div class="tarif-feature">Slides illimitées</div>
-        <div class="tarif-feature">Animations & transitions</div>
-        <div class="tarif-feature">Fichier PPTX + PDF</div>
-        <div class="tarif-feature">Révisions incluses</div>
-      </div>
-    </div>
-    <div class="tarif-card featured reveal reveal-delay-1">
-      <div class="tarif-name">CV Professionnel</div>
-      <div class="tarif-desc">Design premium · ATS-optimisé</div>
-      <div class="tarif-price-wrap"><div class="tarif-delay">Délai : 24h</div></div>
-      <div class="tarif-features">
-        <div class="tarif-feature">Design sur-mesure</div>
-        <div class="tarif-feature">Optimisé ATS</div>
-        <div class="tarif-feature">Fichier PDF + Word</div>
-        <div class="tarif-feature">Lettre de motivation en option</div>
-      </div>
-    </div>
-    <div class="tarif-card reveal reveal-delay-2">
-      <div class="tarif-name">Poster scientifique</div>
-      <div class="tarif-desc">Conférences · Format A0/A1</div>
-      <div class="tarif-price-wrap"><div class="tarif-delay">Délai : 2–3 jours</div></div>
-      <div class="tarif-features">
-        <div class="tarif-feature">Format A0 ou A1</div>
-        <div class="tarif-feature">Haute résolution print</div>
-        <div class="tarif-feature">Fichier PDF + source</div>
-        <div class="tarif-feature">Révisions incluses</div>
-      </div>
-    </div>
+<div class="cta-box rv">
+  <div class="cta-ey">07 / Contact</div>
+  <h2 class="cta-t rv d1">Prêt à démarrer<br><em>votre projet ?</em></h2>
+  <p class="cta-s rv d2">Contactez-nous maintenant. Devis gratuit, réponse en moins de 2 heures.</p>
+  <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;" class="rv d3">
+    <a href="https://wa.me/212614163934" class="bp" target="_blank">WhatsApp — Devis gratuit</a>
+    <a href="mailto:contact.slideatelier@gmail.com" class="bg">Envoyer un email</a>
   </div>
-  <p style="font-size:17px;font-weight:300;color:rgba(245,240,232,0.5);margin:-32px 0 48px;max-width:600px;line-height:1.7;" class="reveal">Chaque projet est unique. Contactez-nous pour obtenir un devis gratuit et personnalisé en moins de 2 heures.</p>
-  <div class="promo-banner reveal reveal-delay-3">
-    <span>Devis gratuit</span> en moins de 2h · Paiement après validation · <span>−10%</span> pour 2 services ou plus
+  <div class="cta-row rv d4">
+    <div><div class="ctal">WhatsApp</div><div class="ctav">+212 614-163934</div></div>
+    <div><div class="ctal">Email</div><div class="ctav">contact.slideatelier@gmail.com</div></div>
+    <div><div class="ctal">Instagram</div><div class="ctav">@slideatelier.pro</div></div>
   </div>
-</section>
+</div>
 
-<!-- Testimonials -->
-<section class="testimonials-section" id="avis">
-  <div class="section-label reveal">06 / Avis clients</div>
-  <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:64px;" class="reveal reveal-delay-1">
-    <h2 style="font-family:'Playfair Display',serif;font-size:56px;font-weight:700;color:#F5F0E8;letter-spacing:-1.5px;line-height:1.05;">Ils nous ont <em style="font-style:italic;color:#C49E61;">fait confiance</em></h2>
-    <div style="display:flex;gap:4px;align-items:center;flex-shrink:0;margin-left:32px;margin-bottom:8px;">
-      <span style="font-family:'Playfair Display',serif;font-size:42px;font-weight:700;color:#C49E61;">5.0</span>
-      <div style="display:flex;flex-direction:column;margin-left:10px;">
-        <div style="display:flex;gap:3px;">
-          <span style="color:#C49E61;font-size:18px;">★★★★★</span>
-        </div>
-        <span style="font-size:12px;letter-spacing:2px;color:rgba(245,240,232,0.3);text-transform:uppercase;margin-top:4px;">Note moyenne</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="testimonials-grid reveal reveal-delay-2">
-
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-quote">"Ma présentation de thèse était magnifique. Le jury a remarqué la qualité du design dès le début. J'ai eu les félicitations du jury — je recommande SlideAtelier à tous les étudiants en médecine."</div>
-      <div class="testi-footer">
-        <div class="testi-avatar">HB</div>
-        <div>
-          <div class="testi-name">Hajar Benali</div>
-          <div class="testi-role">Docteure en médecine · CHU Rabat</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="testi-card testi-featured">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-quote">"Service exceptionnel. Mon CV a été entièrement repensé — j'ai décroché un entretien chez une multinationale à Casablanca la semaine suivante. Le design est professionnel et sobre, exactement ce qu'il fallait."</div>
-      <div class="testi-footer">
-        <div class="testi-avatar">YE</div>
-        <div>
-          <div class="testi-name">Youssef El Fassi</div>
-          <div class="testi-role">Ingénieur informatique · Casablanca</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-quote">"Poster scientifique réalisé en 48h pour une conférence internationale. Qualité impeccable, mise en page claire, et les révisions ont été faites sans aucun souci. Très professionnel."</div>
-      <div class="testi-footer">
-        <div class="testi-avatar">SA</div>
-        <div>
-          <div class="testi-name">Salma Amrani</div>
-          <div class="testi-role">Chercheuse · Université Mohamed V</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-quote">"J'avais besoin de ma soutenance PFE en urgence, 48h avant la date. SlideAtelier a livré un travail remarquable dans les délais. Mes encadrants ont été impressionnés par la présentation."</div>
-      <div class="testi-footer">
-        <div class="testi-avatar">OB</div>
-        <div>
-          <div class="testi-name">Omar Benhaddou</div>
-          <div class="testi-role">Étudiant ingénieur · ENSA Marrakech</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-quote">"Lettre de motivation + CV pour une candidature en master en France. Tout a été livré en moins de 24h. La qualité du design et la rédaction m'ont permis d'obtenir mon admission. Merci infiniment !"</div>
-      <div class="testi-footer">
-        <div class="testi-avatar">NZ</div>
-        <div>
-          <div class="testi-name">Nadia Zouaoui</div>
-          <div class="testi-role">Étudiante · Master Paris Dauphine</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-quote">"Pitch deck pour lever des fonds auprès d'investisseurs. Design vraiment haut de gamme, structuré et convaincant. On a obtenu notre financement. SlideAtelier fait partie de notre équipe maintenant."</div>
-      <div class="testi-footer">
-        <div class="testi-avatar">KM</div>
-        <div>
-          <div class="testi-name">Khalid Moussaoui</div>
-          <div class="testi-role">Fondateur startup · Technopark Rabat</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-section" id="contact">
-  <div class="cta-eyebrow reveal">06 / CONTACT</div>
-  <h2 class="cta-title reveal reveal-delay-1">Prêt à démarrer<br><em>votre projet ?</em></h2>
-  <p class="cta-sub reveal reveal-delay-2">Contactez-nous maintenant. Devis gratuit, réponse en moins de 2 heures.</p>
-  <div class="cta-actions reveal reveal-delay-3">
-    <a href="https://wa.me/212614163934" class="btn-primary" target="_blank">WhatsApp — Devis gratuit</a>
-    <a href="mailto:contact.slideatelier@gmail.com" class="btn-ghost">Envoyer un email</a>
-  </div>
-  <div class="cta-contact-row reveal reveal-delay-4">
-    <div class="cta-contact-item">
-      <div class="cta-contact-label">WhatsApp</div>
-      <div class="cta-contact-val">+212 614-163934</div>
-    </div>
-    <div class="cta-contact-item">
-      <div class="cta-contact-label">Email</div>
-      <div class="cta-contact-val">contact.slideatelier@gmail.com</div>
-    </div>
-    <div class="cta-contact-item">
-      <div class="cta-contact-label">Instagram</div>
-      <div class="cta-contact-val">@slideatelier.pro</div>
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
 <footer>
-  <div class="footer-brand">Slide<span>Atelier</span></div>
-  <div class="footer-links">
-    <a href="#services" class="footer-link">Services</a>
-    <a href="#tarifs" class="footer-link">Tarifs</a>
-    <a href="https://wa.me/212614163934" class="footer-link" target="_blank">Contact</a>
-    <a href="https://instagram.com/slideatelier.pro" class="footer-link" target="_blank">Instagram</a>
+  <div class="ftb">Slide<span>Atelier</span></div>
+  <div class="ftlinks">
+    <a href="#services" class="ftl">Services</a>
+    <a href="#tarifs" class="ftl">Tarifs</a>
+    <a href="https://wa.me/212614163934" class="ftl" target="_blank">Contact</a>
+    <a href="https://instagram.com/slideatelier.pro" class="ftl" target="_blank">Instagram</a>
   </div>
-  <div class="footer-copy">© 2025 SlideAtelier · Maroc</div>
+  <div class="ftc">© 2025 SlideAtelier · Maroc</div>
 </footer>
 
 <script>
-  // Cursor
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursor-ring');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
-  function animRing() { rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animRing); }
-  animRing();
-
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
-  reveals.forEach(el => observer.observe(el));
-
-  // Nav scroll
-  const nav = document.querySelector('nav');
-  window.addEventListener('scroll', () => {
-    nav.style.borderBottomColor = window.scrollY > 80 ? 'rgba(196,158,97,0.15)' : 'rgba(196,158,97,0.08)';
+(function() {
+  var cur = document.getElementById('cur');
+  var curR = document.getElementById('cur-r');
+  var mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', function(e) {
+    mx = e.clientX; my = e.clientY;
+    cur.style.left = mx + 'px'; cur.style.top = my + 'px';
   });
+  (function animR() {
+    rx += (mx - rx) * 0.13; ry += (my - ry) * 0.13;
+    curR.style.left = rx + 'px'; curR.style.top = ry + 'px';
+    requestAnimationFrame(animR);
+  })();
+  var rvEls = document.querySelectorAll('.rv');
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('on'); });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  rvEls.forEach(function(el) { obs.observe(el); });
+  var steps = document.querySelectorAll('.pstep');
+  var slides = document.querySelectorAll('.mslide');
+  var ci = 0;
+  function goTo(n) {
+    steps.forEach(function(s) { s.classList.remove('on'); });
+    slides.forEach(function(s) { s.classList.remove('on'); });
+    if (steps[n]) steps[n].classList.add('on');
+    if (slides[n]) slides[n].classList.add('on');
+    ci = n;
+  }
+  steps.forEach(function(s, i) {
+    s.addEventListener('click', function() { goTo(i); clearInterval(tmr); tmr = setInterval(function(){ goTo((ci+1)%steps.length); }, 2800); });
+  });
+  var tmr = setInterval(function(){ goTo((ci+1)%steps.length); }, 2800);
+})();
 </script>
 </body>
 </html>
