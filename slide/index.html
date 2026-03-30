@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SlideAtelier — Documents qui impressionnent. Toujours.</title>
+<meta name="description" content="Présentations de thèse, CV professionnels, posters scientifiques et pitch decks au Maroc. Design premium, livraison rapide, révisions incluses.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        ink:    '#0A0A0C',
+        ink2:   '#111114',
+        ink3:   '#1A1A1F',
+        gold:   '#C49E61',
+        gold2:  '#E8C97A',
+        gold3:  '#8A6E3E',
+        cream:  '#F5F0E8',
+        muted:  'rgba(245,240,232,0.45)',
+      },
+      fontFamily: {
+        display: ['"Playfair Display"', 'serif'],
+        sans:    ['"DM Sans"', 'sans-serif'],
+        mono:    ['"DM Mono"', 'monospace'],
+      },
+    }
+  }
+}
+</script>
+<style>
+  /* ── Global ── */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { cursor: none; }
+  body { background: #0A0A0C; color: #F5F0E8; font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+  /* ── Custom cursor ── */
+  #cursor { position: fixed; width: 10px; height: 10px; background: #C49E61; border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width .2s, height .2s, background .2s; mix-blend-mode: normal; }
+  #cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid rgba(196,158,97,0.4); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all .12s ease; }
+  body:has(a:hover) #cursor, body:has(button:hover) #cursor { width: 6px; height: 6px; background: #E8C97A; }
+  body:has(a:hover) #cursor-ring, body:has(button:hover) #cursor-ring { width: 56px; height: 56px; border-color: rgba(196,158,97,0.7); }
+
+  /* ── Grain overlay ── */
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.028; background-size: 180px;
+  }
+
+  /* ── Reveal animations ── */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: .1s; }
+  .reveal-delay-2 { transition-delay: .2s; }
+  .reveal-delay-3 { transition-delay: .35s; }
+  .reveal-delay-4 { transition-delay: .5s; }
+
+  /* ── Gold line ── */
+  .gold-line { display: block; width: 48px; height: 1.5px; background: #C49E61; }
+
+  /* ── Nav ── */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 48px; height: 72px; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(24px); border-bottom: 1px solid rgba(196,158,97,0.08); background: rgba(10,10,12,0.85); }
+  .nav-brand { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: #F5F0E8; letter-spacing: -0.5px; }
+  .nav-brand span { font-style: italic; font-weight: 400; color: #C49E61; }
+  .nav-links { display: flex; gap: 40px; align-items: center; }
+  .nav-link { font-size: 13px; font-weight: 400; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(245,240,232,0.55); text-decoration: none; transition: color .2s; }
+  .nav-link:hover { color: #C49E61; }
+  .nav-cta { background: #C49E61; color: #0A0A0C; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; padding: 10px 24px; border-radius: 3px; text-decoration: none; transition: background .2s; }
+  .nav-cta:hover { background: #E8C97A; }
+
+  /* ── Hero ── */
+  .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 80px 100px; position: relative; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 70% 30%, rgba(196,158,97,0.07) 0%, transparent 70%); }
+  .hero-line-v { position: absolute; left: 48px; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, transparent, rgba(196,158,97,0.2) 30%, rgba(196,158,97,0.2) 70%, transparent); }
+  .hero-counter { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; color: rgba(196,158,97,0.4); margin-bottom: 40px; }
+  .hero-eyebrow { font-size: 12px; font-weight: 500; letter-spacing: 5px; text-transform: uppercase; color: #C49E61; margin-bottom: 28px; display: flex; align-items: center; gap: 16px; }
+  .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: #C49E61; }
+  .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(72px, 9vw, 130px); font-weight: 700; line-height: 0.92; letter-spacing: -3px; color: #F5F0E8; margin-bottom: 0; }
+  .hero-title em { font-style: italic; font-weight: 400; color: #C49E61; display: block; }
+  .hero-subtitle { font-size: 18px; font-weight: 300; color: rgba(245,240,232,0.5); line-height: 1.7; max-width: 440px; margin-top: 40px; }
+  .hero-bottom { display: flex; align-items: flex-end; justify-content: space-between; margin-top: 64px; }
+  .hero-cta-group { display: flex; gap: 16px; align-items: center; }
+  .btn-primary { background: #C49E61; color: #0A0A0C; font-size: 13px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; padding: 16px 36px; border-radius: 3px; text-decoration: none; transition: all .25s; display: inline-block; }
+  .btn-primary:hover { background: #E8C97A; transform: translateY(-2px); }
+  .btn-ghost { border: 1px solid rgba(196,158,97,0.3); color: #C49E61; font-size: 13px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; padding: 16px 36px; border-radius: 3px; text-decoration: none; transition: all .25s; display: inline-block; }
+  .btn-ghost:hover { border-color: #C49E61; background: rgba(196,158,97,0.06); }
+  .hero-scroll { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .hero-scroll-text { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(245,240,232,0.3); writing-mode: vertical-rl; }
+  .hero-scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, rgba(196,158,97,0.4), transparent); animation: scrollLine 1.8s ease-in-out infinite; }
+  @keyframes scrollLine { 0%,100% { transform: scaleY(1); opacity: 1; } 50% { transform: scaleY(0.3); opacity: 0.4; } }
+  .hero-tag { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; color: rgba(196,158,97,0.35); }
+
+  /* ── Marquee ── */
+  .marquee-wrap { border-top: 1px solid rgba(196,158,97,0.1); border-bottom: 1px solid rgba(196,158,97,0.1); padding: 18px 0; overflow: hidden; background: rgba(196,158,97,0.03); }
+  .marquee-track { display: flex; gap: 0; white-space: nowrap; animation: marquee 22s linear infinite; }
+  .marquee-track:hover { animation-play-state: paused; }
+  .marquee-item { font-size: 12px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; color: rgba(196,158,97,0.5); padding: 0 40px; border-right: 1px solid rgba(196,158,97,0.15); }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── About strip ── */
+  .about-strip { padding: 120px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .about-number { font-family: 'Playfair Display', serif; font-size: 180px; font-weight: 700; color: rgba(196,158,97,0.06); line-height: 1; letter-spacing: -8px; user-select: none; }
+  .about-content { }
+  .section-label { font-size: 11px; font-weight: 500; letter-spacing: 5px; text-transform: uppercase; color: #C49E61; margin-bottom: 24px; display: flex; align-items: center; gap: 14px; }
+  .section-label::before { content: ''; display: block; width: 24px; height: 1px; background: #C49E61; }
+  .about-title { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 700; color: #F5F0E8; line-height: 1.15; margin-bottom: 24px; letter-spacing: -1px; }
+  .about-title em { font-style: italic; color: #C49E61; }
+  .about-text { font-size: 17px; font-weight: 300; color: rgba(245,240,232,0.55); line-height: 1.8; margin-bottom: 32px; }
+  .stats-row { display: flex; gap: 40px; }
+  .stat { }
+  .stat-val { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 700; color: #C49E61; line-height: 1; }
+  .stat-lbl { font-size: 12px; font-weight: 400; letter-spacing: 1px; color: rgba(245,240,232,0.4); margin-top: 6px; }
+
+  /* ── Services ── */
+  .services-section { padding: 100px 80px; }
+  .services-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 64px; }
+  .services-title { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 700; color: #F5F0E8; letter-spacing: -1.5px; line-height: 1.1; }
+  .services-title em { font-style: italic; color: #C49E61; }
+  .services-count { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px; color: rgba(245,240,232,0.3); }
+  .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .service-card {
+    background: rgba(196,158,97,0.03);
+    border: 1px solid rgba(196,158,97,0.1);
+    padding: 48px 44px;
+    position: relative;
+    overflow: hidden;
+    transition: all .4s cubic-bezier(.16,1,.3,1);
+    cursor: none;
+  }
+  .service-card:hover { background: rgba(196,158,97,0.07); border-color: rgba(196,158,97,0.3); transform: translateY(-4px); }
+  .service-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: #C49E61; transform: scaleY(0); transform-origin: bottom; transition: transform .4s cubic-bezier(.16,1,.3,1); }
+  .service-card:hover::before { transform: scaleY(1); }
+  .service-card-num { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; color: rgba(196,158,97,0.3); margin-bottom: 20px; }
+  .service-card-name { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: #F5F0E8; margin-bottom: 12px; line-height: 1.2; }
+  .service-card-desc { font-size: 15px; font-weight: 300; color: rgba(245,240,232,0.5); line-height: 1.7; margin-bottom: 24px; }
+  .service-card-meta { display: flex; align-items: center; justify-content: space-between; }
+  .service-price { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #C49E61; }
+  .service-delay { font-size: 12px; font-weight: 400; color: rgba(245,240,232,0.3); letter-spacing: 1px; }
+  .service-badge { font-size: 9px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; border: 1px solid rgba(196,158,97,0.3); color: #C49E61; border-radius: 2px; }
+
+  /* ── Process ── */
+  .process-section { padding: 100px 80px; border-top: 1px solid rgba(196,158,97,0.08); }
+  .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 64px; background: rgba(196,158,97,0.08); }
+  .process-step { background: #0A0A0C; padding: 48px 36px; position: relative; }
+  .process-step::after { content: ''; position: absolute; top: 48px; right: 0; width: 1px; height: 40px; background: rgba(196,158,97,0.2); }
+  .process-step:last-child::after { display: none; }
+  .process-num { font-family: 'Playfair Display', serif; font-size: 72px; font-weight: 700; color: rgba(196,158,97,0.08); line-height: 1; margin-bottom: 20px; }
+  .process-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #F5F0E8; margin-bottom: 12px; }
+  .process-desc { font-size: 14px; font-weight: 300; color: rgba(245,240,232,0.45); line-height: 1.7; }
+
+  /* ── Why us ── */
+  .why-section { padding: 100px 80px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: start; }
+  .why-sticky { position: sticky; top: 120px; }
+  .why-big-title { font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 700; color: #F5F0E8; line-height: 1.05; letter-spacing: -2px; margin-bottom: 24px; }
+  .why-big-title em { font-style: italic; color: #C49E61; }
+  .why-big-sub { font-size: 16px; font-weight: 300; color: rgba(245,240,232,0.45); line-height: 1.8; max-width: 360px; }
+  .why-list { display: flex; flex-direction: column; gap: 0; }
+  .why-item { padding: 36px 0; border-bottom: 1px solid rgba(196,158,97,0.1); display: flex; gap: 28px; align-items: flex-start; }
+  .why-item:first-child { border-top: 1px solid rgba(196,158,97,0.1); }
+  .why-icon { width: 44px; height: 44px; background: rgba(196,158,97,0.08); border: 1px solid rgba(196,158,97,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
+  .why-item-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #F5F0E8; margin-bottom: 8px; }
+  .why-item-desc { font-size: 15px; font-weight: 300; color: rgba(245,240,232,0.5); line-height: 1.7; }
+
+  /* ── Tarifs ── */
+  .tarifs-section { padding: 100px 80px; border-top: 1px solid rgba(196,158,97,0.08); }
+  .tarifs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 64px; }
+  .tarif-card { background: rgba(196,158,97,0.04); border: 1px solid rgba(196,158,97,0.12); border-radius: 4px; padding: 36px 32px; position: relative; overflow: hidden; transition: all .3s; }
+  .tarif-card:hover { border-color: rgba(196,158,97,0.35); background: rgba(196,158,97,0.07); }
+  .tarif-card.featured { border-color: #C49E61; background: rgba(196,158,97,0.08); }
+  .tarif-card.featured::before { content: 'POPULAIRE'; position: absolute; top: 16px; right: 16px; font-size: 9px; font-weight: 500; letter-spacing: 2px; color: #0A0A0C; background: #C49E61; padding: 4px 10px; border-radius: 2px; }
+  .tarif-name { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: #F5F0E8; margin-bottom: 8px; }
+  .tarif-desc { font-size: 13px; font-weight: 300; color: rgba(245,240,232,0.45); margin-bottom: 28px; line-height: 1.6; }
+  .tarif-price-wrap { margin-bottom: 24px; }
+  .tarif-price { font-family: 'Playfair Display', serif; font-size: 44px; font-weight: 700; color: #C49E61; line-height: 1; }
+  .tarif-unit { font-size: 14px; font-weight: 300; color: rgba(196,158,97,0.6); }
+  .tarif-delay { font-size: 12px; font-weight: 400; color: rgba(245,240,232,0.3); letter-spacing: 1px; margin-top: 6px; }
+  .tarif-features { display: flex; flex-direction: column; gap: 10px; }
+  .tarif-feature { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; font-weight: 300; color: rgba(245,240,232,0.55); }
+  .tarif-feature::before { content: '✦'; color: #C49E61; font-size: 10px; margin-top: 3px; flex-shrink: 0; }
+  .promo-banner { margin-top: 24px; padding: 20px 28px; background: rgba(196,158,97,0.06); border: 1px solid rgba(196,158,97,0.2); border-radius: 4px; text-align: center; font-size: 15px; font-weight: 400; color: rgba(245,240,232,0.7); }
+  .promo-banner span { color: #C49E61; font-weight: 500; }
+
+  /* ── Testimonials ── */
+  .testimonials-section { padding: 100px 80px; border-top: 1px solid rgba(196,158,97,0.08); }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .testi-card { background: rgba(196,158,97,0.03); border: 1px solid rgba(196,158,97,0.1); border-radius: 4px; padding: 40px 36px; display: flex; flex-direction: column; gap: 24px; transition: all .35s cubic-bezier(.16,1,.3,1); position: relative; overflow: hidden; }
+  .testi-card:hover { background: rgba(196,158,97,0.07); border-color: rgba(196,158,97,0.28); transform: translateY(-4px); }
+  .testi-card.testi-featured { border-color: rgba(196,158,97,0.35); background: rgba(196,158,97,0.06); }
+  .testi-stars { color: #C49E61; font-size: 16px; letter-spacing: 3px; }
+  .testi-quote { font-size: 15px; font-weight: 300; color: rgba(245,240,232,0.65); line-height: 1.8; flex: 1; font-style: italic; }
+  .testi-footer { display: flex; align-items: center; gap: 14px; padding-top: 20px; border-top: 1px solid rgba(196,158,97,0.1); }
+  .testi-avatar { width: 42px; height: 42px; border-radius: 50%; background: rgba(196,158,97,0.15); border: 1px solid rgba(196,158,97,0.3); display: flex; align-items: center; justify-content: center; font-family: "Playfair Display", serif; font-size: 14px; font-weight: 700; color: #C49E61; flex-shrink: 0; }
+  .testi-name { font-size: 15px; font-weight: 500; color: #F5F0E8; margin-bottom: 3px; }
+  .testi-role { font-size: 12px; font-weight: 300; color: rgba(245,240,232,0.35); letter-spacing: 0.5px; }
+
+  /* ── CTA Section ── */
+  .cta-section { margin: 0 80px 100px; border: 1px solid rgba(196,158,97,0.15); border-radius: 6px; padding: 80px; background: rgba(196,158,97,0.03); position: relative; overflow: hidden; }
+  .cta-section::before { content: ''; position: absolute; top: -200px; right: -200px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(196,158,97,0.08) 0%, transparent 70%); pointer-events: none; }
+  .cta-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 5px; text-transform: uppercase; color: rgba(196,158,97,0.6); margin-bottom: 24px; }
+  .cta-title { font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 700; color: #F5F0E8; line-height: 1.05; letter-spacing: -2px; margin-bottom: 16px; }
+  .cta-title em { font-style: italic; color: #C49E61; }
+  .cta-sub { font-size: 18px; font-weight: 300; color: rgba(245,240,232,0.5); margin-bottom: 48px; max-width: 500px; line-height: 1.7; }
+  .cta-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .cta-contact-row { display: flex; gap: 40px; margin-top: 48px; padding-top: 48px; border-top: 1px solid rgba(196,158,97,0.1); }
+  .cta-contact-item { }
+  .cta-contact-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(196,158,97,0.4); margin-bottom: 6px; }
+  .cta-contact-val { font-size: 17px; font-weight: 400; color: #C49E61; }
+
+  /* ── Footer ── */
+  footer { padding: 48px 80px; border-top: 1px solid rgba(196,158,97,0.1); display: flex; align-items: center; justify-content: space-between; }
+  .footer-brand { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: rgba(245,240,232,0.4); }
+  .footer-brand span { font-style: italic; color: rgba(196,158,97,0.4); }
+  .footer-links { display: flex; gap: 32px; }
+  .footer-link { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(245,240,232,0.3); text-decoration: none; transition: color .2s; }
+  .footer-link:hover { color: #C49E61; }
+  .footer-copy { font-size: 12px; color: rgba(245,240,232,0.2); font-family: 'DM Mono', monospace; }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .hero { padding: 0 32px 80px; }
+    .hero-title { font-size: 58px; }
+    .about-strip, .why-section { grid-template-columns: 1fr; padding: 80px 32px; }
+    .about-number { font-size: 100px; }
+    .services-section, .process-section, .tarifs-section { padding: 80px 32px; }
+    .services-grid, .tarifs-grid { grid-template-columns: 1fr; }
+    .process-grid { grid-template-columns: 1fr 1fr; }
+    .cta-section { margin: 0 32px 80px; padding: 48px 32px; }
+    .cta-title { font-size: 44px; }
+    footer { flex-direction: column; gap: 24px; padding: 40px 32px; text-align: center; }
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-brand">Slide<span>Atelier</span></div>
+  <div class="nav-links">
+    <a href="#services" class="nav-link">Services</a>
+    <a href="#process" class="nav-link">Process</a>
+    <a href="#tarifs" class="nav-link">Tarifs</a>
+    <a href="https://wa.me/212614163934" class="nav-cta" target="_blank">Devis gratuit</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" style="padding-top: 72px;">
+  <div class="hero-bg"></div>
+  <div class="hero-line-v"></div>
+
+  <div class="reveal">
+    <div class="hero-counter">01 / ACCUEIL</div>
+    <div class="hero-eyebrow">Services Professionnels · Maroc</div>
+  </div>
+
+  <h1 class="hero-title reveal reveal-delay-1">
+    Vos documents,
+    <em>redessinés.</em>
+  </h1>
+
+  <p class="hero-subtitle reveal reveal-delay-2">
+    De la thèse médicale au pitch deck executive — chaque livrable conçu pour convaincre, défendre et marquer les esprits.
+  </p>
+
+  <div class="hero-bottom reveal reveal-delay-3">
+    <div class="hero-cta-group">
+      <a href="https://wa.me/212614163934" class="btn-primary" target="_blank">Démarrer un projet</a>
+      <a href="#services" class="btn-ghost">Voir les services</a>
+    </div>
+    <div class="hero-scroll">
+      <span class="hero-tag">SCROLL</span>
+      <div class="hero-scroll-line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Présentation de thèse</span>
+    <span class="marquee-item">CV Professionnel</span>
+    <span class="marquee-item">Poster Scientifique</span>
+    <span class="marquee-item">Pitch Deck</span>
+    <span class="marquee-item">Soutenance PFE</span>
+    <span class="marquee-item">Lettre de Motivation</span>
+    <span class="marquee-item">Rapport Professionnel</span>
+    <span class="marquee-item">PPTX · PDF · Word</span>
+    <span class="marquee-item">Présentation de thèse</span>
+    <span class="marquee-item">CV Professionnel</span>
+    <span class="marquee-item">Poster Scientifique</span>
+    <span class="marquee-item">Pitch Deck</span>
+    <span class="marquee-item">Soutenance PFE</span>
+    <span class="marquee-item">Lettre de Motivation</span>
+    <span class="marquee-item">Rapport Professionnel</span>
+    <span class="marquee-item">PPTX · PDF · Word</span>
+  </div>
+</div>
+
+<!-- About -->
+<section class="about-strip" id="about">
+  <div class="about-number reveal">01</div>
+  <div class="about-content">
+    <div class="section-label reveal">À propos</div>
+    <h2 class="about-title reveal reveal-delay-1">
+      Le design au service<br>de <em>votre excellence</em>
+    </h2>
+    <p class="about-text reveal reveal-delay-2">
+      SlideAtelier est un studio de création de documents académiques et professionnels basé au Maroc. Nous transformons vos contenus en livrables qui impressionnent — des slides qui défendent, des CVs qui convainquent, des posters qui marquent.
+    </p>
+    <div class="stats-row reveal reveal-delay-3">
+      <div class="stat">
+        <div class="stat-val">100%</div>
+        <div class="stat-lbl">Sur-mesure</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">24h</div>
+        <div class="stat-lbl">Délai minimum</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">∞</div>
+        <div class="stat-lbl">Révisions incluses</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section class="services-section" id="services">
+  <div class="services-header reveal">
+    <div>
+      <div class="section-label">02 / Services</div>
+      <h2 class="services-title">Ce que<br>nous <em>créons</em></h2>
+    </div>
+    <div class="services-count">06 services</div>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-card-num">01</div>
+      <div class="service-card-name">Présentation de thèse</div>
+      <div class="service-card-desc">Médecine, droit, ingénierie, sciences. Design académique rigoureux, slides claires et impact visuel fort pour votre soutenance.</div>
+      <div class="service-card-meta">
+        <div>
+          <div class="service-cta-mini" style="font-size:13px;font-weight:500;color:#C49E61;letter-spacing:1px;margin-bottom:6px;">Devis gratuit →</div>
+          <div class="service-delay">Délai : 2–4 jours</div>
+        </div>
+        <div class="service-badge">Spécialité</div>
+      </div>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-card-num">02</div>
+      <div class="service-card-name">CV Professionnel</div>
+      <div class="service-card-desc">Design premium, ATS-optimisé, adapté à votre secteur et vos objectifs de carrière. Lettre de motivation incluse sur demande.</div>
+      <div class="service-card-meta">
+        <div>
+          <div class="service-cta-mini" style="font-size:13px;font-weight:500;color:#C49E61;letter-spacing:1px;margin-bottom:6px;">Devis gratuit →</div>
+          <div class="service-delay">Délai : 24h</div>
+        </div>
+        <div class="service-badge">Populaire</div>
+      </div>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-card-num">03</div>
+      <div class="service-card-name">Poster scientifique</div>
+      <div class="service-card-desc">Conférences et colloques. Format A0/A1, mise en page claire et hiérarchie visuelle optimale pour vos données.</div>
+      <div class="service-card-meta">
+        <div>
+          <div class="service-cta-mini" style="font-size:13px;font-weight:500;color:#C49E61;letter-spacing:1px;margin-bottom:6px;">Devis gratuit →</div>
+          <div class="service-delay">Délai : 2–3 jours</div>
+        </div>
+      </div>
+    </div>
+    <div class="service-card reveal reveal-delay-3">
+      <div class="service-card-num">04</div>
+      <div class="service-card-name">Soutenance PFE / Master</div>
+      <div class="service-card-desc">Toutes filières, design soigné pour une soutenance de fin d'études réussie. Animations et transitions incluses.</div>
+      <div class="service-card-meta">
+        <div>
+          <div class="service-cta-mini" style="font-size:13px;font-weight:500;color:#C49E61;letter-spacing:1px;margin-bottom:6px;">Devis gratuit →</div>
+          <div class="service-delay">Délai : 2–3 jours</div>
+        </div>
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-card-num">05</div>
+      <div class="service-card-name">Pitch deck & rapport</div>
+      <div class="service-card-desc">Présenter une idée, un projet ou des résultats avec un impact visuel fort. Structure narrative et design orienté conversion.</div>
+      <div class="service-card-meta">
+        <div>
+          <div class="service-cta-mini" style="font-size:13px;font-weight:500;color:#C49E61;letter-spacing:1px;margin-bottom:6px;">Devis gratuit →</div>
+          <div class="service-delay">Délai : 2–4 jours</div>
+        </div>
+      </div>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-card-num">06</div>
+      <div class="service-card-name">Lettre de motivation</div>
+      <div class="service-card-desc">Rédigée et mise en page pour se démarquer — études, emploi, immigration. Adaptation selon le destinataire.</div>
+      <div class="service-card-meta">
+        <div>
+          <div class="service-cta-mini" style="font-size:13px;font-weight:500;color:#C49E61;letter-spacing:1px;margin-bottom:6px;">Devis gratuit →</div>
+          <div class="service-delay">Délai : 24h</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Process -->
+<section class="process-section" id="process">
+  <div class="section-label reveal">03 / Process</div>
+  <h2 class="about-title reveal reveal-delay-1">Comment ça <em>fonctionne</em></h2>
+  <div class="process-grid reveal reveal-delay-2">
+    <div class="process-step">
+      <div class="process-num">01</div>
+      <div class="process-title">Vous nous contactez</div>
+      <div class="process-desc">WhatsApp ou email — décrivez votre besoin en quelques mots. Nous répondons sous 2h.</div>
+    </div>
+    <div class="process-step">
+      <div class="process-num">02</div>
+      <div class="process-title">Devis gratuit</div>
+      <div class="process-desc">Prix clair, délai précis, sans engagement. Paiement uniquement après validation finale.</div>
+    </div>
+    <div class="process-step">
+      <div class="process-num">03</div>
+      <div class="process-title">Vous envoyez le contenu</div>
+      <div class="process-desc">Plan, textes, données — via WhatsApp, email ou Google Drive. Nous gérons le reste.</div>
+    </div>
+    <div class="process-step">
+      <div class="process-num">04</div>
+      <div class="process-title">Livraison & révisions</div>
+      <div class="process-desc">Document livré en PPTX, PDF ou Word. Révisions incluses jusqu'à votre satisfaction totale.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Why us -->
+<section class="why-section">
+  <div class="why-sticky">
+    <div class="section-label reveal">04 / Pourquoi nous</div>
+    <h2 class="why-big-title reveal reveal-delay-1">La différence<br><em>SlideAtelier</em></h2>
+    <p class="why-big-sub reveal reveal-delay-2">Nous ne livrons pas des templates. Nous créons des documents taillés pour votre contexte, votre contenu et votre objectif.</p>
+  </div>
+  <div class="why-list">
+    <div class="why-item reveal">
+      <div class="why-icon">✦</div>
+      <div>
+        <div class="why-item-title">Design sur-mesure</div>
+        <div class="why-item-desc">Chaque document est créé de zéro pour vous. Pas de templates recyclés, pas de designs génériques. Votre identité, votre contenu, notre exécution.</div>
+      </div>
+    </div>
+    <div class="why-item reveal reveal-delay-1">
+      <div class="why-icon">⚡</div>
+      <div>
+        <div class="why-item-title">Livraison rapide</div>
+        <div class="why-item-desc">CVs en 24h, thèses en 2–4 jours. Nous respectons vos délais de soutenance et d'entretien, même les urgences.</div>
+      </div>
+    </div>
+    <div class="why-item reveal reveal-delay-2">
+      <div class="why-icon">↺</div>
+      <div>
+        <div class="why-item-title">Révisions illimitées</div>
+        <div class="why-item-desc">Pas de surprise sur la facture. Les révisions sont incluses jusqu'à ce que vous soyez 100% satisfait. Paiement après validation.</div>
+      </div>
+    </div>
+    <div class="why-item reveal reveal-delay-3">
+      <div class="why-icon">🔒</div>
+      <div>
+        <div class="why-item-title">Confidentialité totale</div>
+        <div class="why-item-desc">Vos données, résultats de recherche et informations personnelles restent strictement confidentiels. Toujours.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Tarifs -->
+<section class="tarifs-section" id="tarifs">
+  <div class="section-label reveal">05 / Tarifs</div>
+  <h2 class="about-title reveal reveal-delay-1">Tarifs <em>sur devis</em></h2>
+  <div class="tarifs-grid">
+    <div class="tarif-card reveal">
+      <div class="tarif-name">Présentation de thèse</div>
+      <div class="tarif-desc">Médecine · Droit · Ingénierie · Sciences</div>
+      <div class="tarif-price-wrap"><div class="tarif-delay">Délai : 2–4 jours</div></div>
+      <div class="tarif-features">
+        <div class="tarif-feature">Slides illimitées</div>
+        <div class="tarif-feature">Animations & transitions</div>
+        <div class="tarif-feature">Fichier PPTX + PDF</div>
+        <div class="tarif-feature">Révisions incluses</div>
+      </div>
+    </div>
+    <div class="tarif-card featured reveal reveal-delay-1">
+      <div class="tarif-name">CV Professionnel</div>
+      <div class="tarif-desc">Design premium · ATS-optimisé</div>
+      <div class="tarif-price-wrap"><div class="tarif-delay">Délai : 24h</div></div>
+      <div class="tarif-features">
+        <div class="tarif-feature">Design sur-mesure</div>
+        <div class="tarif-feature">Optimisé ATS</div>
+        <div class="tarif-feature">Fichier PDF + Word</div>
+        <div class="tarif-feature">Lettre de motivation en option</div>
+      </div>
+    </div>
+    <div class="tarif-card reveal reveal-delay-2">
+      <div class="tarif-name">Poster scientifique</div>
+      <div class="tarif-desc">Conférences · Format A0/A1</div>
+      <div class="tarif-price-wrap"><div class="tarif-delay">Délai : 2–3 jours</div></div>
+      <div class="tarif-features">
+        <div class="tarif-feature">Format A0 ou A1</div>
+        <div class="tarif-feature">Haute résolution print</div>
+        <div class="tarif-feature">Fichier PDF + source</div>
+        <div class="tarif-feature">Révisions incluses</div>
+      </div>
+    </div>
+  </div>
+  <p style="font-size:17px;font-weight:300;color:rgba(245,240,232,0.5);margin:-32px 0 48px;max-width:600px;line-height:1.7;" class="reveal">Chaque projet est unique. Contactez-nous pour obtenir un devis gratuit et personnalisé en moins de 2 heures.</p>
+  <div class="promo-banner reveal reveal-delay-3">
+    <span>Devis gratuit</span> en moins de 2h · Paiement après validation · <span>−10%</span> pour 2 services ou plus
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials-section" id="avis">
+  <div class="section-label reveal">06 / Avis clients</div>
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:64px;" class="reveal reveal-delay-1">
+    <h2 style="font-family:'Playfair Display',serif;font-size:56px;font-weight:700;color:#F5F0E8;letter-spacing:-1.5px;line-height:1.05;">Ils nous ont <em style="font-style:italic;color:#C49E61;">fait confiance</em></h2>
+    <div style="display:flex;gap:4px;align-items:center;flex-shrink:0;margin-left:32px;margin-bottom:8px;">
+      <span style="font-family:'Playfair Display',serif;font-size:42px;font-weight:700;color:#C49E61;">5.0</span>
+      <div style="display:flex;flex-direction:column;margin-left:10px;">
+        <div style="display:flex;gap:3px;">
+          <span style="color:#C49E61;font-size:18px;">★★★★★</span>
+        </div>
+        <span style="font-size:12px;letter-spacing:2px;color:rgba(245,240,232,0.3);text-transform:uppercase;margin-top:4px;">Note moyenne</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="testimonials-grid reveal reveal-delay-2">
+
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-quote">"Ma présentation de thèse était magnifique. Le jury a remarqué la qualité du design dès le début. J'ai eu les félicitations du jury — je recommande SlideAtelier à tous les étudiants en médecine."</div>
+      <div class="testi-footer">
+        <div class="testi-avatar">HB</div>
+        <div>
+          <div class="testi-name">Hajar Benali</div>
+          <div class="testi-role">Docteure en médecine · CHU Rabat</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card testi-featured">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-quote">"Service exceptionnel. Mon CV a été entièrement repensé — j'ai décroché un entretien chez une multinationale à Casablanca la semaine suivante. Le design est professionnel et sobre, exactement ce qu'il fallait."</div>
+      <div class="testi-footer">
+        <div class="testi-avatar">YE</div>
+        <div>
+          <div class="testi-name">Youssef El Fassi</div>
+          <div class="testi-role">Ingénieur informatique · Casablanca</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-quote">"Poster scientifique réalisé en 48h pour une conférence internationale. Qualité impeccable, mise en page claire, et les révisions ont été faites sans aucun souci. Très professionnel."</div>
+      <div class="testi-footer">
+        <div class="testi-avatar">SA</div>
+        <div>
+          <div class="testi-name">Salma Amrani</div>
+          <div class="testi-role">Chercheuse · Université Mohamed V</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-quote">"J'avais besoin de ma soutenance PFE en urgence, 48h avant la date. SlideAtelier a livré un travail remarquable dans les délais. Mes encadrants ont été impressionnés par la présentation."</div>
+      <div class="testi-footer">
+        <div class="testi-avatar">OB</div>
+        <div>
+          <div class="testi-name">Omar Benhaddou</div>
+          <div class="testi-role">Étudiant ingénieur · ENSA Marrakech</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-quote">"Lettre de motivation + CV pour une candidature en master en France. Tout a été livré en moins de 24h. La qualité du design et la rédaction m'ont permis d'obtenir mon admission. Merci infiniment !"</div>
+      <div class="testi-footer">
+        <div class="testi-avatar">NZ</div>
+        <div>
+          <div class="testi-name">Nadia Zouaoui</div>
+          <div class="testi-role">Étudiante · Master Paris Dauphine</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-quote">"Pitch deck pour lever des fonds auprès d'investisseurs. Design vraiment haut de gamme, structuré et convaincant. On a obtenu notre financement. SlideAtelier fait partie de notre équipe maintenant."</div>
+      <div class="testi-footer">
+        <div class="testi-avatar">KM</div>
+        <div>
+          <div class="testi-name">Khalid Moussaoui</div>
+          <div class="testi-role">Fondateur startup · Technopark Rabat</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-eyebrow reveal">06 / CONTACT</div>
+  <h2 class="cta-title reveal reveal-delay-1">Prêt à démarrer<br><em>votre projet ?</em></h2>
+  <p class="cta-sub reveal reveal-delay-2">Contactez-nous maintenant. Devis gratuit, réponse en moins de 2 heures.</p>
+  <div class="cta-actions reveal reveal-delay-3">
+    <a href="https://wa.me/212614163934" class="btn-primary" target="_blank">WhatsApp — Devis gratuit</a>
+    <a href="mailto:contact.slideatelier@gmail.com" class="btn-ghost">Envoyer un email</a>
+  </div>
+  <div class="cta-contact-row reveal reveal-delay-4">
+    <div class="cta-contact-item">
+      <div class="cta-contact-label">WhatsApp</div>
+      <div class="cta-contact-val">+212 614-163934</div>
+    </div>
+    <div class="cta-contact-item">
+      <div class="cta-contact-label">Email</div>
+      <div class="cta-contact-val">contact.slideatelier@gmail.com</div>
+    </div>
+    <div class="cta-contact-item">
+      <div class="cta-contact-label">Instagram</div>
+      <div class="cta-contact-val">@slideatelier.pro</div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-brand">Slide<span>Atelier</span></div>
+  <div class="footer-links">
+    <a href="#services" class="footer-link">Services</a>
+    <a href="#tarifs" class="footer-link">Tarifs</a>
+    <a href="https://wa.me/212614163934" class="footer-link" target="_blank">Contact</a>
+    <a href="https://instagram.com/slideatelier.pro" class="footer-link" target="_blank">Instagram</a>
+  </div>
+  <div class="footer-copy">© 2025 SlideAtelier · Maroc</div>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+  function animRing() { rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animRing); }
+  animRing();
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // Nav scroll
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.borderBottomColor = window.scrollY > 80 ? 'rgba(196,158,97,0.15)' : 'rgba(196,158,97,0.08)';
+  });
+</script>
+</body>
+</html>
