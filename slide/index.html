@@ -51,7 +51,12 @@ h1.ht em { font-style: italic; font-weight: 400; color: #C49E61; display: block;
 .sl::before { content: ''; display: block; width: 22px; height: 1px; background: #C49E61; }
 .st { font-family: 'Playfair Display', serif; font-size: 50px; font-weight: 700; color: #F5F0E8; line-height: 1.08; letter-spacing: -1.5px; margin-bottom: 18px; }
 .st em { font-style: italic; color: #C49E61; }
-.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.about-grid {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 64px;
+    align-items: center;
+  }
 .abn { font-family: 'Playfair Display', serif; font-size: 200px; font-weight: 700; color: rgba(196,158,97,0.05); line-height: 1; letter-spacing: -10px; user-select: none; }
 .at { font-size: 16px; font-weight: 300; color: rgba(245,240,232,0.52); line-height: 1.85; margin-bottom: 36px; }
 .stats { display: flex; gap: 44px; }
@@ -199,6 +204,102 @@ footer { padding: 44px 80px; border-top: 1px solid rgba(196,158,97,0.1); display
     transition: color .3s;
   }
   .tool-pill:hover .tool-pill-name { color: #F5F0E8; }
+
+
+  
+
+  
+  
+
+  /* ── Mockup Carousel ── */
+  .mc-carousel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 420px;
+    flex-shrink: 0;
+  }
+  .mc-pin {
+    font-size: 28px;
+    line-height: 1;
+    margin-bottom: 8px;
+    animation: pinSwing 2.6s ease-in-out infinite;
+    transform-origin: 50% 0%;
+    filter: drop-shadow(0 3px 8px rgba(0,0,0,0.4));
+    user-select: none;
+  }
+  @keyframes pinSwing {
+    0%   { transform: rotate(-14deg); }
+    25%  { transform: rotate(10deg); }
+    50%  { transform: rotate(-6deg); }
+    75%  { transform: rotate(12deg); }
+    100% { transform: rotate(-14deg); }
+  }
+  .mc-lbl {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(196,158,97,0.5);
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .mc-window {
+    width: 420px;
+    height: 290px;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 24px 56px rgba(0,0,0,0.5), 0 0 0 1px rgba(196,158,97,0.15);
+    animation: cardTilt 4s ease-in-out infinite;
+  }
+  @keyframes cardTilt {
+    0%,100% { transform: rotate(-1.5deg) translateY(0px); }
+    35%     { transform: rotate(1.2deg)  translateY(-6px); }
+    65%     { transform: rotate(-0.8deg) translateY(-8px); }
+  }
+  .mc-strip {
+    display: flex;
+    width: 300%;
+    height: 100%;
+    transition: transform .7s cubic-bezier(.16,1,.3,1);
+  }
+  .mc-item {
+    width: 33.333%;
+    height: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .mc-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+  }
+  .mc-dots {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 12px;
+  }
+  .mc-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(196,158,97,0.2);
+    cursor: pointer;
+    transition: all .3s;
+    border: none;
+    padding: 0;
+  }
+  .mc-dot.on {
+    background: #C49E61;
+    width: 22px;
+    border-radius: 3px;
+  }
+  @media (max-width: 900px) {
+    .mc-carousel, .mc-window { width: 100%; }
+    .about-grid { grid-template-columns: 1fr; }
+  }
 
 </style>
 </head>
@@ -350,7 +451,26 @@ footer { padding: 44px 80px; border-top: 1px solid rgba(196,158,97,0.1); display
 
 <section class="sec" id="about">
   <div class="about-grid">
-    <div class="abn rv">01</div>
+
+    <!-- GAUCHE : Carousel documents -->
+    <div class="mc-carousel rv">
+      <div class="mc-pin">📌</div>
+      <div class="mc-lbl"><span id="mcLblTxt">Soutenance PFE</span></div>
+      <div class="mc-window">
+        <div class="mc-strip" id="mcStrip">
+          <div class="mc-item"><img src="images/pfe.png" alt="PFE"></div>
+          <div class="mc-item"><img src="images/cv.png" alt="CV"></div>
+          <div class="mc-item"><img src="images/lettre.png" alt="Lettre"></div>
+        </div>
+      </div>
+      <div class="mc-dots">
+        <button class="mc-dot on" data-i="0"></button>
+        <button class="mc-dot" data-i="1"></button>
+        <button class="mc-dot" data-i="2"></button>
+      </div>
+    </div>
+
+    <!-- DROITE : Texte À propos -->
     <div>
       <div class="sl rv">À propos</div>
       <h2 class="st rv d1">Le design au service<br>de <em>votre excellence</em></h2>
@@ -361,6 +481,7 @@ footer { padding: 44px 80px; border-top: 1px solid rgba(196,158,97,0.1); display
         <div><div class="sv">∞</div><div class="slbl">Révisions incluses</div></div>
       </div>
     </div>
+
   </div>
 </section>
 
@@ -562,8 +683,29 @@ footer { padding: 44px 80px; border-top: 1px solid rgba(196,158,97,0.1); display
   var tmr = setInterval(function(){ goTo((ci+1)%steps.length); }, 2800);
 })();
 
-
-
+  // ── Carousel ──
+  (function() {
+    var strip = document.getElementById('mcStrip');
+    var dots  = document.querySelectorAll('.mc-dot');
+    var lbl   = document.getElementById('mcLblTxt');
+    if (!strip) return;
+    var labels = ['Soutenance PFE', 'CV Professionnel', 'Lettre de motivation'];
+    var cur = 0, n = 3, tmr;
+    function go(i) {
+      cur = ((i % n) + n) % n;
+      strip.style.transform = 'translateX(-' + (cur * 33.333) + '%)';
+      dots.forEach(function(d, j) { d.classList.toggle('on', j === cur); });
+      if (lbl) lbl.textContent = labels[cur];
+    }
+    dots.forEach(function(d) {
+      d.addEventListener('click', function() {
+        go(+d.getAttribute('data-i'));
+        clearInterval(tmr);
+        tmr = setInterval(function() { go(cur + 1); }, 3400);
+      });
+    });
+    tmr = setInterval(function() { go(cur + 1); }, 3400);
+  })();
 
 </script>
 </body>
